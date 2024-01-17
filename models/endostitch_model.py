@@ -13,19 +13,19 @@ class EndostitchDevice(SerialDevice):
         super().__init__(boardName)
         self._state = state
 
-    def abrePinza(self):
+    def abrirPinza(self):
         return self.write('1')
     
-    def cierraPinza(self):
+    def cerrarPinza(self):
         return self.write('2')
     
-    def mueveMariposaDerecha(self):
+    def moverMariposaDerecha(self):
         return self.write('3')
     
-    def mueveMariposaCentro(self):
+    def moverMariposaCentro(self):
         return self.write('4')
     
-    def mueveMariposaIzquierda(self):
+    def moverMariposaIzquierda(self):
         return self.write('5')
 
     @property
@@ -48,8 +48,5 @@ class EndostitchDevice(SerialDevice):
         self._state = newState
     
     def changeState(self):
-        if self.state == 0:
-            self.state = 1
-        elif self.state == 1:
-            self.state = 0
+        self.state = self.state ^ 1 # XOR
 

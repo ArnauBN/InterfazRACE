@@ -9,9 +9,10 @@ from PyQt5.QtWidgets import QWidget, QGraphicsScene
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QMetaObject, Q_ARG
 from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen
 
-
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
+from utils.globals import PATH_TO_PROJECT
 
+import pathlib
 
 
 #%%
@@ -20,11 +21,12 @@ Verbose = False  # very simple debugging/log
 class ExperimentView(QWidget):
     def __init__(self):
         super().__init__()
-        uic.loadUi("./ui_files/experiment_view.ui", self)
+        self.setPaths()
+        uic.loadUi(self.uiPath, self)
         
-        self.label.setText('''
+        self.label.setText(f'''
                            <html><head/><body><p><b>
-                           <img src="./resources/logos/RACE.png"
+                           <img src="{self.logoRACEPath}"
                            width="160"
                            height="117"
                            style="vertical-align:middle"/>
@@ -33,9 +35,9 @@ class ExperimentView(QWidget):
                            </span></b></p></body></html>
                            ''')
 
-        UMHpixmap = QPixmap('./resources/logos/UMH.png').scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        UVApixmap = QPixmap('./resources/logos/UVA.png').scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        UMApixmap = QPixmap('./resources/logos/UMA.jpeg').scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        UMHpixmap = QPixmap(self.logoUMHPath).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        UVApixmap = QPixmap(self.logoUVAPath).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        UMApixmap = QPixmap(self.logoUMAPath).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.UMHLabel.setPixmap(UMHpixmap)
         self.UVALabel.setPixmap(UVApixmap)
         self.UMALabel.setPixmap(UMApixmap)
@@ -56,7 +58,14 @@ class ExperimentView(QWidget):
         
         
         self.drawGraphics()
+    
+    def setPaths(self):
+        self.uiPath = str(PATH_TO_PROJECT / pathlib.Path('ui_files', 'experiment_view.ui'))
         
+        self.logoRACEPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'RACE.png'))
+        self.logoUMHPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMH.png'))
+        self.logoUVAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UVA.png'))
+        self.logoUMAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMA.png'))
         
     def ImageUpdateSlot0(self, Image):
         if Verbose: print('recieve frames from cam 0')

@@ -8,6 +8,8 @@ from models.main_model import MainModel
 from views.main_view import MainView
 from controllers.experiment_controller import ExperimentController
 
+from controllers.endostitch_controller import EndostitchController # Endostitch
+
 
 #%%
 class MainController:
@@ -29,6 +31,7 @@ class MainController:
         self.model = MainModel()
         self.view = MainView()
         
+        
         self.view.URteleoperadoButton.clicked.connect(self.on_click_URteleoperadoButton)
         self.view.URautonomoButton.clicked.connect(self.on_click_URautonomoButton)
         self.view.camaraButton.clicked.connect(self.on_click_camaraButton)
@@ -47,6 +50,11 @@ class MainController:
         self.model.setupEndostitch()
         self.model.setupRazonador()
         self.model.setupPhantom()
+        
+        
+        # Endostitch
+        self.endostitch_controller = EndostitchController(self)
+        
     
     def on_click_URteleoperadoButton(self):
         self.model.URteleoperado.changeState()
@@ -63,6 +71,12 @@ class MainController:
     def on_click_endostitchButton(self):
         self.model.endostitch.changeState()
         self.view.changeState(self.view.endostitchButton, self.model.endostitch.state)
+        
+        # Endostitch
+        if self.model.endostitch.state==1:
+            self.endostitch_controller.view.show()
+        else:
+            self.endostitch_controller.view.hide()
     
     def on_click_razonadorButton(self):
         self.model.razonador.changeState()
