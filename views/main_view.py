@@ -9,6 +9,9 @@ from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import Qt
 
+from utils.globals import PATH_TO_PROJECT
+
+import pathlib
 
 #%%
 class MainView(QMainWindow):
@@ -27,17 +30,19 @@ class MainView(QMainWindow):
         three more logos to the side using the labels defined in the .ui file.
         """
         super().__init__()
-        uic.loadUi("./ui_files/main_view.ui", self)
-        self.URteleoperadoButton.setIcon(QIcon("./resources/icons/status-offline.png"))
-        self.URautonomoButton.setIcon(QIcon("./resources/icons/status-offline.png"))
-        self.camaraButton.setIcon(QIcon("./resources/icons/status-offline.png"))
-        self.endostitchButton.setIcon(QIcon("./resources/icons/status-offline.png"))
-        self.razonadorButton.setIcon(QIcon("./resources/icons/status-offline.png"))
-        self.phantomButton.setIcon(QIcon("./resources/icons/status-offline.png"))
+        self.setPaths()
+        uic.loadUi(self.uiPath, self)
+
+        self.URteleoperadoButton.setIcon(QIcon(self.iconOffPath))
+        self.URautonomoButton.setIcon(QIcon(self.iconOffPath))
+        self.camaraButton.setIcon(QIcon(self.iconOffPath))
+        self.endostitchButton.setIcon(QIcon(self.iconOffPath))
+        self.razonadorButton.setIcon(QIcon(self.iconOffPath))
+        self.phantomButton.setIcon(QIcon(self.iconOffPath))
         
-        self.label.setText('''
+        self.label.setText(f'''
                            <html><head/><body><p><b>
-                           <img src="./resources/logos/RACE.png"
+                           <img src="{self.logoRACEPath}"
                            width="160"
                            height="117"
                            style="vertical-align:middle"/>
@@ -46,13 +51,26 @@ class MainView(QMainWindow):
                            </span></b></p></body></html>
                            ''')
 
-        UMHpixmap = QPixmap('./resources/logos/UMH.png').scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        UVApixmap = QPixmap('./resources/logos/UVA.png').scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
-        UMApixmap = QPixmap('./resources/logos/UMA.jpeg').scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        UMHpixmap = QPixmap(self.logoUMHPath).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        UVApixmap = QPixmap(self.logoUVAPath).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
+        UMApixmap = QPixmap(self.logoUMAPath).scaled(64, 64, Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.UMHLabel.setPixmap(UMHpixmap)
         self.UVALabel.setPixmap(UVApixmap)
         self.UMALabel.setPixmap(UMApixmap)
+    
+    def setPaths(self):
+        self.uiPath = str(PATH_TO_PROJECT / pathlib.Path('ui_files', 'main_view.ui'))
         
+        self.iconOffPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'icons', 'status-offline.png'))
+        self.iconOnPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'icons', 'status.png'))
+        self.iconAwayPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'icons', 'status-away.png'))
+        self.iconBusyPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'icons', 'status-busy.png'))
+        
+        self.logoRACEPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'RACE.png'))
+        self.logoUMHPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMH.png'))
+        self.logoUVAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UVA.png'))
+        self.logoUMAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMA.png'))
+    
     def changeState(self, button, newState):
         """
         Changes the icons of the buttons depending on the specified state.
@@ -75,17 +93,14 @@ class MainView(QMainWindow):
         """
         button.state = newState
         if button.state==0:
-            button.setIcon(QIcon("./resources/icons/status-offline.png"))
+            button.setIcon(QIcon(self.iconOffPath))
         elif button.state==1:
-            button.setIcon(QIcon("./resources/icons/status.png"))
+            button.setIcon(QIcon(self.iconOnPath))
         elif button.state==2:
-            button.setIcon(QIcon("./resources/icons/status-away.png"))
+            button.setIcon(QIcon(self.iconAwayPath))
         else:
-            button.setIcon(QIcon("./resources/icons/status-busy.png"))
+            button.setIcon(QIcon(self.iconBusyPath))
     
-    
-    
-    # Modify this method to do something when closing the program
     def closeEvent(self, event):
         """
         This method is called when the window is closed.

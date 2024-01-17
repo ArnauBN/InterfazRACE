@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>198</width>
+    <height>182</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QLabel" name="endostitchLabel">
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="text">
+      <string>Endostitch</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignHCenter|Qt::AlignTop</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="abrirPinzaButton">
+     <property name="text">
+      <string>Abrir pinza</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="cerrarPinzaButton">
+     <property name="text">
+      <string>Cerrar Pinza</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="moverDerechaButton">
+     <property name="text">
+      <string>Mover derecha</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="moverIzquierdaButton">
+     <property name="text">
+      <string>Mover izquierda</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="moverCentroButton">
+     <property name="text">
+      <string>Mover centro</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
