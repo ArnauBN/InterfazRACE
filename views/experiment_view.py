@@ -19,7 +19,27 @@ import pathlib
 Verbose = False  # very simple debugging/log
 
 class ExperimentView(QWidget):
+    """Controls the GUI elements and appearence of the Experiment Window.
+    
+    Inherits from QWidget.
+    A .ui file is loaded and some images are added.
+    The closeEvent() method is overrriden to stop the camera threads.
+    """
+    
     def __init__(self):
+        """ExperimentView Constructor.
+        
+        Calls super().__init__(), loads experiment_view.ui file, sets the title
+        and title format using html and a logo, adds three more logos to the
+        side using the labels defined in the .ui file.
+        
+        Has two camera worker threads, one for a regular cam and another for a
+        RealSense Depth camera.
+        
+        Has a QGraphicsView object for Data Flow Diagrams.
+        
+        Creates an instance of Communicate.
+        """
         super().__init__()
         self.setPaths()
         uic.loadUi(self.uiPath, self)
@@ -60,6 +80,15 @@ class ExperimentView(QWidget):
         self.drawGraphics()
     
     def setPaths(self):
+        """
+        Sets necessary paths using the global variable PATH_TO_PROJECT.
+        OS agnostic.
+
+        Returns
+        -------
+        None.
+
+        """
         self.uiPath = str(PATH_TO_PROJECT / pathlib.Path('ui_files', 'experiment_view.ui'))
         
         self.logoRACEPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'RACE.png'))
@@ -68,29 +97,95 @@ class ExperimentView(QWidget):
         self.logoUMAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMA.png'))
         
     def ImageUpdateSlot0(self, Image):
+        """
+        Method tied to camera worker 0 (regular camera). Updates frame.
+
+        Parameters
+        ----------
+        Image : QImage
+            New frame.
+
+        Returns
+        -------
+        None.
+
+        """
         if Verbose: print('recieve frames from cam 0')
         self.Cam0Label.setPixmap(QPixmap.fromImage(Image))
     
     def ImageUpdateSlot1(self, depth_qimage):
+        """
+        Method tied to camera worker 1 (RealSense Depth camera). Updates frame.
+
+        Parameters
+        ----------
+        Image : QImage
+            New frame.
+
+        Returns
+        -------
+        None.
+
+        """
         if Verbose: print('recieve frames from cam 1')
         QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, QPixmap.fromImage(depth_qimage)))
 
     def stopCameras(self):
+        """
+        Stops both camera threads.
+
+        Returns
+        -------
+        None.
+
+        """
         if Verbose: print('cancel feed')
         if self.CameraWorker0.isRunning(): self.CameraWorker0.stop()
         if self.CameraWorker1.isRunning(): self.CameraWorker1.stop()
 
     def closeEvent(self, event):
+        """
+        Override closeEvent method of Qwidget. Calls stopCameras(), emits the
+        closed signal, and closes the window.
+
+        Parameters
+        ----------
+        event : QEvent
+            Close event.
+
+        Returns
+        -------
+        None.
+
+        """
         self.stopCameras()
         self.com.closed.emit()
         event.accept()
     
     def startCameras(self):
+        """
+        Starts both camera threads.
+
+        Returns
+        -------
+        None.
+
+        """
         self.CameraWorker0.start()
         self.CameraWorker1.start()
 
 
     def drawGraphics(self):
+        """
+        Draws the DFD.
+        
+        TODO
+
+        Returns
+        -------
+        None.
+
+        """
         self.scene = QGraphicsScene()
         self.whiteBrush = QBrush(Qt.white)
         self.grayBrush = QBrush(Qt.gray)
@@ -105,6 +200,7 @@ class ExperimentView(QWidget):
 
 
 class Communicate(QObject):
+    """Simple auxiliary class to handle custom signals for ExperimentView"""
     closed = pyqtSignal()
 
 

@@ -59,6 +59,15 @@ class MainView(QMainWindow):
         self.UMALabel.setPixmap(UMApixmap)
     
     def setPaths(self):
+        """
+        Sets necessary paths using the global variable PATH_TO_PROJECT.
+        OS agnostic.
+
+        Returns
+        -------
+        None.
+
+        """
         self.uiPath = str(PATH_TO_PROJECT / pathlib.Path('ui_files', 'main_view.ui'))
         
         self.iconOffPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'icons', 'status-offline.png'))
