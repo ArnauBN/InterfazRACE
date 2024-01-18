@@ -52,6 +52,7 @@ class MainController:
         self.model.setupRazonador()
         self.model.setupPhantom()
         
+        self.model.endostitchStateChanged.connect(self.on_click_endostitchButton)
         
         # Endostitch
         self.endostitch_controller = EndostitchController(self)

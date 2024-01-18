@@ -12,9 +12,11 @@ from .endostitch_model import EndostitchDevice
 from .razonador_model import RazonadorDevice
 from .phantom_model import PhantomDevice
 
+from PyQt5.QtCore import pyqtSignal
 
 #%%
 class MainModel:
+    endostitchStateChanged = pyqtSignal(int)
     def __init__(self):
         self.URteleoperado = URTeleoperadoDevice()
         self.URautonomo    = URautonomoDevice()
@@ -25,6 +27,8 @@ class MainModel:
         
         self.experiments   = ExperimentsModel()
         self.experiments.loadExperiments()
+        
+        self.endostitch.stateChanged.connect(self.updateEndostitchState)
 
     def setupURteleoperado(self):
         pass
@@ -36,14 +40,21 @@ class MainModel:
         pass
     
     def setupEndostitch(self):
-        try:
-            self.endostitch.Serial(port='COM3', baudrate=9600, timeout=None)
-        except Exception as e:
-            print('Cannot communicate with endostitch.')
-            print(e)
+        pass
+        # try:
+        #     self.endostitch.Serial(port='COM3', baudrate=9600, timeout=None)
+        # except Exception as e:
+        #     print('Cannot communicate with endostitch.')
+        #     print(e)
     
     def setupRazonador(self):
         pass
     
     def setupPhantom(self):
         pass
+    
+    def updateEndostitchState(self, newState):
+        self.endostitchStateChanged.emit(newState)
+    
+    
+    
