@@ -12,14 +12,15 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 
 #%%
-class EndostitchDevice(QObject):
-    stateChanged = pyqtSignal(int)
+class EndostitchDevice:
     def __init__(self, state=0):
         super().__init__()
         self._state = state
 
         self.pub = rospy.Publisher('endo_grip',String,queue_size=10)
         rospy.Subscriber("endo_grip",String,self.callback)
+        
+        self.com = Communicate()
 
     def abrirPinza(self):
         return self.pub.publish("1")
@@ -62,8 +63,11 @@ class EndostitchDevice(QObject):
         #    print('Wrong state for Endostitch: available states are 0 (off) or 1 (on).')
         #    return
         self._state = newState
-        self.stateChanged.emit(newState)
+        self.com.stateChanged.emit(newState)
     
     def changeState(self):
         self.state = self.state ^ 1 # XOR
 
+class Communicate(QObject):
+    """Simple auxiliary class to handle custom signals for EndostitchDevice"""
+    stateChanged = pyqtSignal(int)

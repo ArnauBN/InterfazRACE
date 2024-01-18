@@ -17,7 +17,6 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 #%%
 class MainModel(QObject):
-    endostitchStateChanged = pyqtSignal(int)
     def __init__(self):
         self.URteleoperado = URTeleoperadoDevice()
         self.URautonomo    = URautonomoDevice()
@@ -30,6 +29,8 @@ class MainModel(QObject):
         self.experiments.loadExperiments()
         
         self.endostitch.stateChanged.connect(self.updateEndostitchState)
+        
+        self.com = Communicate()
 
     def setupURteleoperado(self):
         pass
@@ -55,7 +56,9 @@ class MainModel(QObject):
         pass
     
     def updateEndostitchState(self, newState):
-        self.endostitchStateChanged.emit(newState)
+        self.com.endostitchStateChanged.emit(newState)
     
     
-    
+class Communicate(QObject):
+    """Simple auxiliary class to handle custom signals for MainModel"""
+    endostitchStateChanged = pyqtSignal(int)
