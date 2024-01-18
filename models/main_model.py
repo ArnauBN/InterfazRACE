@@ -12,10 +12,11 @@ from .endostitch_model import EndostitchDevice
 from .razonador_model import RazonadorDevice
 from .phantom_model import PhantomDevice
 
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal
+
 
 #%%
-class MainModel:
+class MainModel(QObject):
     endostitchStateChanged = pyqtSignal(int)
     def __init__(self):
         self.URteleoperado = URTeleoperadoDevice()

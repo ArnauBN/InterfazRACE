@@ -10,6 +10,7 @@ from PyQt5.QtCore import Qt, QRectF
 from PyQt5.QtGui import QFont
 
 
+#%%
 class ProcessItem(QGraphicsEllipseItem):
     def __init__(self, process_id, x, y, text=None):
         super().__init__(x, y, 100, 50)
@@ -29,12 +30,13 @@ class ProcessItem(QGraphicsEllipseItem):
             self.setBrush(Qt.green)
         else:
             self.setBrush(Qt.lightGray)
-    
-    
+
     def resizeEvent(self, event):
             # Handle resizing of the ellipse, and adjust the font size accordingly
             super().resizeEvent(event)
             self.text_item.adjust_font_size(self.rect().width(), self.rect().height())
+
+
 
 class TextItem(QGraphicsTextItem):
     def __init__(self, text, parent=None):
@@ -52,3 +54,9 @@ class TextItem(QGraphicsTextItem):
         # Set font size based on the minimum scale factor
         current_font.setPointSizeF(current_font.pointSizeF() * scale_factor)
         self.setFont(current_font)
+
+class DataFlowItem(QGraphicsLineItem):
+    def __init__(self, source, destination):
+        super().__init__()
+        self.setLine(source.x() + 25, source.y() + 25, destination.x() + 25, destination.y() + 25)
+        self.setPen(Qt.black)
