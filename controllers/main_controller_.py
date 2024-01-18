@@ -15,11 +15,12 @@ from controllers.endostitch_controller import EndostitchController # Endostitch
 class MainController:
     """Handles the communication between the data model and the GUI view.
     
-    Creates an instance of MainView and MainModel when instanced.
+    Creates an instance of MainView and MainModel when instantiated.
     Creates an instance of ExperimentController when the iniciar button is
     pressed.
     Adds functionality to the buttons.
     """
+    
     def __init__(self):
         """MainController Constructor.
         
@@ -57,18 +58,56 @@ class MainController:
         
     
     def on_click_URteleoperadoButton(self):
+        """
+        Method tied to URteleoperado button. Changes the model's state and the
+        view accordingly.
+
+        Returns
+        -------
+        None.
+
+        """
         self.model.URteleoperado.changeState()
         self.view.changeState(self.view.URteleoperadoButton, self.model.URteleoperado.state)
     
     def on_click_URautonomoButton(self):
+        """
+        Method tied to URautonomo button. Changes the model's state and the
+        view accordingly.
+
+        Returns
+        -------
+        None.
+
+        """
         self.model.URautonomo.changeState()
         self.view.changeState(self.view.URautonomoButton, self.model.URautonomo.state)
     
     def on_click_camaraButton(self):
+        """
+        Method tied to camara button. Changes the model's state and the view
+        accordingly.
+
+        Returns
+        -------
+        None.
+
+        """
         self.model.camara.changeState()
         self.view.changeState(self.view.camaraButton, self.model.camara.state)
     
     def on_click_endostitchButton(self):
+        """
+        Method tied to endostitch button. Changes the model's state and the
+        view accordingly.
+        
+        Temporary: shows and hides endostitch controls.
+
+        Returns
+        -------
+        None.
+
+        """
         self.model.endostitch.changeState()
         self.view.changeState(self.view.endostitchButton, self.model.endostitch.state)
         
@@ -79,17 +118,55 @@ class MainController:
             self.endostitch_controller.view.hide()
     
     def on_click_razonadorButton(self):
+        """
+        Method tied to razonador button. Changes the model's state and the view
+        accordingly.
+
+        Returns
+        -------
+        None.
+
+        """
         self.model.razonador.changeState()
         self.view.changeState(self.view.razonadorButton, self.model.razonador.state)
     
     def on_click_phantomButton(self):
+        """
+        Method tied to phantom button. Changes the model's state and the view
+        accordingly.
+
+        Returns
+        -------
+        None.
+
+        """
         self.model.phantom.changeState()
         self.view.changeState(self.view.phantomButton, self.model.phantom.state)
 
     def on_click_iniciarButton(self):
+        """
+        Method tied to iniciar button. Using the currently selected experiment,
+        creates an instance of ExperimentController (which will show the
+        experiment window) and connects the experiment view's closed signal 
+        with the experimentWindowClosed method.
+
+        Returns
+        -------
+        None.
+
+        """
         idx = self.view.experimentsListWidget.currentRow()
         self.expController = ExperimentController(self, idx)
         self.expController.view.com.closed.connect(self.experimentWindowClosed)
     
     def experimentWindowClosed(self):
+        """
+        Method tied to the experiment view's closed signal. Deletes the 
+        experiment controller instance when the window is closed.
+
+        Returns
+        -------
+        None.
+
+        """
         del self.expController # maybe we don't want to do this
