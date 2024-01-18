@@ -15,6 +15,8 @@ from utils.globals import PATH_TO_PROJECT
 import pathlib
 
 
+from utils.DFDobjects import ProcessItem
+
 #%%
 Verbose = False  # very simple debugging/log
 
@@ -193,7 +195,9 @@ class ExperimentView(QWidget):
         
         self.flujogramaView.setGeometry(0, 0, 600, 500)
         
-        self.scene.addRect(200,200,200,200, self.pen, self.whiteBrush)
+        p1 = ProcessItem(1, 200, 200, 'Process 1')
+        self.scene.addItem(p1)
+        # self.scene.addRect(200, 200, 200, 200, self.pen, self.whiteBrush)
         self.flujogramaView.setScene(self.scene)
         
         # https://github.com/pbauermeister/dfd
