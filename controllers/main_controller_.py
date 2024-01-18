@@ -52,11 +52,18 @@ class MainController:
         self.model.setupRazonador()
         self.model.setupPhantom()
         
-        self.model.com.endostitchStateChanged.connect(self.on_click_endostitchButton)
+        self.model.com.endostitchStateChanged.connect(self.on_endostitch_state_changed)
         
         # Endostitch
         self.endostitch_controller = EndostitchController(self)
-        
+    
+    
+    def on_endostitch_state_changed(self, newState):
+        self.view.changeState(self.view.endostitchButton, newState)
+        if newState==0:
+            self.endostitch_controller.view.hide()
+        else:
+            self.endostitch_controller.view.show()
     
     def on_click_URteleoperadoButton(self):
         """
@@ -110,13 +117,13 @@ class MainController:
 
         """
         self.model.endostitch.changeState()
-        self.view.changeState(self.view.endostitchButton, self.model.endostitch.state)
         
-        # Endostitch
-        if self.model.endostitch.state==1:
-            self.endostitch_controller.view.show()
-        else:
+        # This might not be necessary since we have on_endostitch_state_changed
+        self.view.changeState(self.view.endostitchButton, self.model.endostitch.state)
+        if self.model.endostitch.state==0:
             self.endostitch_controller.view.hide()
+        else:
+            self.endostitch_controller.view.show()
     
     def on_click_razonadorButton(self):
         """

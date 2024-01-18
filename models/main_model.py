@@ -28,7 +28,7 @@ class MainModel(QObject):
         self.experiments   = ExperimentsModel()
         self.experiments.loadExperiments()
         
-        self.endostitch.stateChanged.connect(self.updateEndostitchState)
+        self.endostitch.com.stateChanged.connect(self.updateEndostitchState)
         
         self.com = Communicate()
 
