@@ -31,7 +31,7 @@ def main():
     height = controller.view.frameGeometry().height()
     controller.view.setFixedSize(width, height)
 
-    app.exec() # if exec() is not called, the app will be non-blocking
+    app.exec()
 
 if __name__ == '__main__':
     main()

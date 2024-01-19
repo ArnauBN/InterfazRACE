@@ -37,7 +37,7 @@ class EndostitchDevice:
     def moverIzquierda(self):
         return self.pub.publish("5")
      
-    def callback(self,data):
+    def callback(self, data):
         if data.data == "0" :
             self.state = 0
             #rospy.loginfo("state: 0")
@@ -67,7 +67,7 @@ class EndostitchDevice:
     
     def changeState(self):
         self.state = self.state ^ 1 # XOR
-
+        
 class Communicate(QObject):
     """Simple auxiliary class to handle custom signals for EndostitchDevice"""
     stateChanged = pyqtSignal(int)

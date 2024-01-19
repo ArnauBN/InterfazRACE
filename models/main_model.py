@@ -16,7 +16,7 @@ from PyQt5.QtCore import QObject, pyqtSignal
 
 
 #%%
-class MainModel(QObject):
+class MainModel:
     def __init__(self):
         self.URteleoperado = URTeleoperadoDevice()
         self.URautonomo    = URautonomoDevice()
