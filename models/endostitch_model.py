@@ -6,21 +6,29 @@ Created on Tue Jan 16 13:15:05 2024
 @author: arnau
 """
 
-import rospy
-from std_msgs.msg import String
 from PyQt5.QtCore import QObject, pyqtSignal
+
+startROS=True
+try:
+    import rospy
+    from std_msgs.msg import String
+except ModuleNotFoundError as e:
+    print(e)
+    print('Not using ROS')
+    startROS = False
 
 
 #%%
 class EndostitchDevice:
-    def __init__(self, state=0):
+    def __init__(self, state=0, startROS=True):
         super().__init__()
         self._state = state
-
-        self.pub = rospy.Publisher('endo_grip',String,queue_size=10)
-        rospy.Subscriber("endo_grip",String,self.callback)
-        
+        if startROS: self._startROS()
         self.com = Communicate()
+
+    def _startROS(self):
+        self.pub = rospy.Publisher('endo_grip', String, queue_size=10)
+        rospy.Subscriber("endo_grip", String, self.callback)
 
     def abrirPinza(self):
         return self.pub.publish("1")
@@ -51,22 +59,15 @@ class EndostitchDevice:
     
     @state.setter
     def state(self, newState):
-        #if newState==0:
-        #    if self.ser is not None: self.close()
-        #elif newState==1:
-        #    if self.ser is not None:
-        #        self.open()
-        #    else:
-        #        print('Serial communication not initiated.')
-        #        return
-        #else:
-        #    print('Wrong state for Endostitch: available states are 0 (off) or 1 (on).')
-        #    return
         self._state = newState
         self.com.stateChanged.emit(newState)
     
     def changeState(self):
-        self.state = self.state ^ 1 # XOR
+        self._state = self._state ^ 1 # XOR
+        self.com.stateChanged.emit(self._state)
+        
+        # This doesn't seem to emit the signal or maybe it is emitted twice...
+        # self.state = self.state ^ 1
         
 class Communicate(QObject):
     """Simple auxiliary class to handle custom signals for EndostitchDevice"""
