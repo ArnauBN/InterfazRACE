@@ -5,9 +5,9 @@ Created on Thu Jan 18 11:49:08 2024
 @author: arnau
 """
 
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsEllipseItem, QGraphicsTextItem, QGraphicsLineItem
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsEllipseItem, QGraphicsTextItem, QGraphicsLineItem, QGraphicsScene
 from PyQt5.QtCore import Qt, QRectF
-from PyQt5.QtGui import QFont
+from PyQt5.QtGui import QPen, QColor
 
 
 #%%
@@ -58,5 +58,27 @@ class TextItem(QGraphicsTextItem):
 class DataFlowItem(QGraphicsLineItem):
     def __init__(self, source, destination):
         super().__init__()
-        self.setLine(source.x() + 25, source.y() + 25, destination.x() + 25, destination.y() + 25)
-        self.setPen(Qt.black)
+        self.setPen(QPen(Qt.black, 2))
+        # self.setLine(source.x() + 25, source.y() + 25, destination.x() + 25, destination.y() + 25)
+        self.setLine(source.x(), source.y(), destination.x(), destination.y())
+
+
+class CustomScene(QGraphicsScene):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        
+        # Set the scene rectangle to ensure that the border is drawn within the specified bounds
+        self.setSceneRect(QRectF(-250, -500, 500, 1000))
+        self.border_color = QColor(Qt.black)
+        self.background_color = QColor(Qt.white)
+
+    def drawBackground(self, painter, rect):
+        super().drawBackground(painter, rect)
+
+        # Fill the background with a color
+        painter.fillRect(self.sceneRect(), self.background_color)
+
+        # Draw the border around the scene
+        border_rect = self.sceneRect().adjusted(-1, -1, 1, 1)
+        painter.setPen(self.border_color)
+        painter.drawRect(border_rect)

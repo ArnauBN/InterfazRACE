@@ -10,12 +10,12 @@ from PyQt5.QtCore import Qt, pyqtSignal, QObject, QMetaObject, Q_ARG
 from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen
 
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
-from utils.globals import PATH_TO_PROJECT
+from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
 
 import pathlib
 
 
-from utils.DFDobjects import ProcessItem, DataFlowItem
+from utils.DFDobjects import ProcessItem, DataFlowItem, CustomScene
 
 #%%
 Verbose = False  # very simple debugging/log
@@ -72,7 +72,7 @@ class ExperimentView(QWidget):
         
         self.com = Communicate()
     
-        self.CameraWorker0 = CameraWorker(1, verbose=Verbose) # change index depending on number of cameras connected
+        self.CameraWorker0 = CameraWorker(CAMERA_0_INDEX, verbose=Verbose) # change index depending on number of cameras connected
         self.CameraWorker0.ImageUpdate.connect(self.ImageUpdateSlot0)
         
         self.CameraWorker1 = RealSenseCameraWorker(verbose=Verbose)
@@ -188,21 +188,24 @@ class ExperimentView(QWidget):
         None.
 
         """
-        self.scene = QGraphicsScene()
+        self.scene = QGraphicsScene(-500, -1000, 1000, 2000)
+        # self.scene = CustomScene()
         self.whiteBrush = QBrush(Qt.white)
         self.grayBrush = QBrush(Qt.gray)
         self.pen = QPen(Qt.black)
         
-        self.flujogramaView.setGeometry(0, 0, 600, 500)
+        self.flujogramaView.setGeometry(0, 0, int(self.scene.width()), int(self.scene.height()))
         
-        p1 = ProcessItem(1, 200, 200, 'Process 1')
-        p2 = ProcessItem(1, 200, 100, 'Process 2')
-        # data_flow12 = DataFlowItem(p1, p2)
+        p1 = ProcessItem(1, 0, -100, 'Process 1')
+        p2 = ProcessItem(1, 0, 100, 'Process 2')
+        data_flow12 = DataFlowItem(p1, p2)
         self.scene.addItem(p1)
         self.scene.addItem(p2)
         # self.scene.addItem(data_flow12)
         
         self.flujogramaView.setScene(self.scene)
+        # self.flujogramaView.setSceneRect(self.scene.sceneRect())
+        # self.resize(self.scene.sceneRect().size().toSize())
         
         # https://github.com/pbauermeister/dfd
 
