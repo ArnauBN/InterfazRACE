@@ -24,12 +24,14 @@ class ProcessItem(QGraphicsEllipseItem):
         self.textItem.setPos(x + 5, y + 10)
         self.textItem.adjust_font_size(self.rect().width(), self.rect().height())
 
-    def mousePressEvent(self, event):
-        self.state ^= 1
-        if self.state==0:
-            self.setBrush(Qt.green)
-        else:
-            self.setBrush(Qt.lightGray)
+    def mouseReleaseEvent(self, event):
+            # Check if there was minimal movement between press and release events
+            if event.button() == Qt.LeftButton and event.scenePos() == event.buttonDownScenePos(Qt.LeftButton):
+                self.state ^= 1
+                if self.state == 0:
+                    self.setBrush(Qt.green)
+                else:
+                    self.setBrush(Qt.lightGray)
 
     def resizeEvent(self, event):
             # Handle resizing of the ellipse, and adjust the font size accordingly

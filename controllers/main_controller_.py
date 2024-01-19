@@ -119,11 +119,11 @@ class MainController:
         self.model.endostitch.changeState()
         
         # This might not be necessary since we have on_endostitch_state_changed
-        self.view.changeState(self.view.endostitchButton, self.model.endostitch.state)
-        if self.model.endostitch.state==0:
-            self.endostitch_controller.view.hide()
-        else:
-            self.endostitch_controller.view.show()
+        # self.view.changeState(self.view.endostitchButton, self.model.endostitch.state)
+        # if self.model.endostitch.state==0:
+        #     self.endostitch_controller.view.hide()
+        # else:
+        #     self.endostitch_controller.view.show()
     
     def on_click_razonadorButton(self):
         """

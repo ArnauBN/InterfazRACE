@@ -8,7 +8,7 @@ from .experiments_model import ExperimentsModel
 from .urteleoperado_model import URTeleoperadoDevice
 from .camara_model import CamaraDevice
 from .urautonomo_model import URautonomoDevice
-from .endostitch_model import EndostitchDevice
+from .endostitch_model import EndostitchDevice, startROS
 from .razonador_model import RazonadorDevice
 from .phantom_model import PhantomDevice
 
@@ -21,7 +21,7 @@ class MainModel:
         self.URteleoperado = URTeleoperadoDevice()
         self.URautonomo    = URautonomoDevice()
         self.camara        = CamaraDevice()
-        self.endostitch    = EndostitchDevice()
+        self.endostitch    = EndostitchDevice(state=0, startROS=startROS)
         self.razonador     = RazonadorDevice()
         self.phantom       = PhantomDevice()
         
