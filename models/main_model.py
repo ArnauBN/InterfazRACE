@@ -29,6 +29,7 @@ class MainModel:
         self.experiments.loadExperiments()
         
         self.endostitch.com.stateChanged.connect(self.updateEndostitchState)
+        self.razonador.com.faseChanged.connect(self.updateRazonadorFase)
         
         self.com = Communicate()
 
@@ -57,8 +58,12 @@ class MainModel:
     
     def updateEndostitchState(self, newState):
         self.com.endostitchStateChanged.emit(newState)
+
+    def updateRazonadorFase(self, newFase):
+        self.com.razonadorFaseChanged.emit(newFase)
     
     
 class Communicate(QObject):
     """Simple auxiliary class to handle custom signals for MainModel"""
     endostitchStateChanged = pyqtSignal(int)
+    razonadorFaseChanged = pyqtSignal(int)
