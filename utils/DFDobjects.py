@@ -15,7 +15,7 @@ class ProcessItem(QGraphicsEllipseItem):
     def __init__(self, process_id, x, y, text=None, razonadorOBj=None):
         super().__init__(x, y, 100, 50)
         self.setBrush(Qt.lightGray)
-        self.setFlag(QGraphicsItem.ItemIsMovable)
+        # self.setFlag(QGraphicsItem.ItemIsMovable)
         self.process_id = process_id
         self.state = 0
         self.razonadorOBj = razonadorOBj
