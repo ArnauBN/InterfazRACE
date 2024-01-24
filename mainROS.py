@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Thu Jan 18 09:15:00 2024
@@ -12,7 +13,7 @@ import rospy
 
 #%%
 def mainROS():
-    # ROS code
+    rospy.init_node('interfaz',anonymous=True)
     main()
 
 if __name__ == '__main__':
