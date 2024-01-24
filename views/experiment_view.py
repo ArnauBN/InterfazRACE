@@ -9,13 +9,12 @@ from PyQt5.QtWidgets import QWidget, QGraphicsScene
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QMetaObject, Q_ARG
 from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen
 
-from utils.camera_threads import CameraWorker, RealSenseCameraWorker
-from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
-
 import pathlib
 
-
+from utils.camera_threads import CameraWorker, RealSenseCameraWorker
+from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
 from utils.DFDobjects import ProcessItem, DataFlowItem, CustomScene
+
 
 #%%
 Verbose = False  # very simple debugging/log
@@ -196,12 +195,7 @@ class ExperimentView(QWidget):
         
         self.flujogramaView.setGeometry(0, 0, int(self.scene.width()), int(self.scene.height()))
         
-        # p1 = ProcessItem(1, 0, -100, 'Process 1')
-        # p2 = ProcessItem(1, 0, 100, 'Process 2')
         # data_flow12 = DataFlowItem(p1, p2)
-        # self.scene.addItem(p1)
-        # self.scene.addItem(p2)
-        # self.scene.addItem(data_flow12)
         
         self.flujogramaView.setScene(self.scene)
         # self.flujogramaView.setSceneRect(self.scene.sceneRect())

@@ -7,6 +7,8 @@ Created on Tue Jan 16 13:12:03 2024
 from .device_model import Device
 
 
+
+
 #%%
 class CamaraDevice(Device):
     def __init__(self, *args, **kwargs):
