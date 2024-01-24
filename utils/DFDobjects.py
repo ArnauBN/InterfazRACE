@@ -12,26 +12,35 @@ from PyQt5.QtGui import QPen, QColor
 
 #%%
 class ProcessItem(QGraphicsEllipseItem):
-    def __init__(self, process_id, x, y, text=None):
+    def __init__(self, process_id, x, y, text=None, razonadorOBj=None):
         super().__init__(x, y, 100, 50)
         self.setBrush(Qt.lightGray)
         self.setFlag(QGraphicsItem.ItemIsMovable)
         self.process_id = process_id
         self.state = 0
+        self.razonadorOBj = razonadorOBj
         
         t = str(process_id) if text == None else text
         self.textItem = TextItem(t, self)
         self.textItem.setPos(x + 5, y + 10)
         self.textItem.adjust_font_size(self.rect().width(), self.rect().height())
 
-    def mouseReleaseEvent(self, event):
-            # Check if there was minimal movement between press and release events
-            if event.button() == Qt.LeftButton and event.scenePos() == event.buttonDownScenePos(Qt.LeftButton):
-                self.state ^= 1
-                if self.state == 0:
-                    self.setBrush(Qt.green)
-                else:
-                    self.setBrush(Qt.lightGray)
+    # def mouseReleaseEvent(self, event):
+    #         # Check if there was minimal movement between press and release events
+    #         if event.button() == Qt.LeftButton and event.scenePos() == event.buttonDownScenePos(Qt.LeftButton):
+    #             self.state ^= 1
+    #             if self.state == 0:
+    #                 self.setBrush(Qt.green)
+    #             else:
+    #                 self.setBrush(Qt.lightGray)
+    def mousePressEvent(self, event):
+        self.state ^= 1
+        if self.state==0:
+            if self.razonadorOBj is not None:
+                self.razonadorOBj.changeFase(self.process_id)
+            self.setBrush(Qt.green)
+        else:
+            self.setBrush(Qt.lightGray)
 
     def resizeEvent(self, event):
             # Handle resizing of the ellipse, and adjust the font size accordingly

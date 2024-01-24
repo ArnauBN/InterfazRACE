@@ -96,7 +96,7 @@ class ExperimentView(QWidget):
         self.logoRACEPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'RACE.png'))
         self.logoUMHPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMH.png'))
         self.logoUVAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UVA.png'))
-        self.logoUMAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMA.png'))
+        self.logoUMAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMA.jpeg'))
         
     def ImageUpdateSlot0(self, Image):
         """
@@ -196,11 +196,11 @@ class ExperimentView(QWidget):
         
         self.flujogramaView.setGeometry(0, 0, int(self.scene.width()), int(self.scene.height()))
         
-        p1 = ProcessItem(1, 0, -100, 'Process 1')
-        p2 = ProcessItem(1, 0, 100, 'Process 2')
-        data_flow12 = DataFlowItem(p1, p2)
-        self.scene.addItem(p1)
-        self.scene.addItem(p2)
+        # p1 = ProcessItem(1, 0, -100, 'Process 1')
+        # p2 = ProcessItem(1, 0, 100, 'Process 2')
+        # data_flow12 = DataFlowItem(p1, p2)
+        # self.scene.addItem(p1)
+        # self.scene.addItem(p2)
         # self.scene.addItem(data_flow12)
         
         self.flujogramaView.setScene(self.scene)
