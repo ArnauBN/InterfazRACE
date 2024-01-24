@@ -30,28 +30,33 @@ class EndostitchDevice:
         self.pub = rospy.Publisher('endo_grip', String, queue_size=10)
         rospy.Subscriber("endo_grip", String, self.callback)
 
+    def _savePublish(self, data):
+        try:
+            self.pub.publish(data)
+        except Exception as e:
+            print("ROS Publish Exception in endostitch:")
+            print(e)
+
     def abrirPinza(self):
-        return self.pub.publish("1")
+        return self._savePublish("1")
     
     def cerrarPinza(self):
-        return self.pub.publish("2")
+        return self._savePublish("2")
     
     def moverDerecha(self):
-        return self.pub.publish("3")
+        return self._savePublish("3")
     
     def moverCentro(self):
-        return self.pub.publish("4")
+        return self._savePublish("4")
     
     def moverIzquierda(self):
-        return self.pub.publish("5")
+        return self._savePublish("5")
      
     def callback(self, data):
         if data.data == "0" :
             self.state = 0
-            #rospy.loginfo("state: 0")
         else:
             self.state = 1
-            #rospy.loginfo("state: 1")
 
     @property
     def state(self):

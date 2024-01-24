@@ -113,7 +113,6 @@ class ExperimentController:
             self.view.startCameras()
 
     def on_razonador_fase_changed(self, newFase):
-        # aqui cosas
         self.p1.setBrush(Qt.lightGray)
         self.p2.setBrush(Qt.lightGray)
         self.p3.setBrush(Qt.lightGray)

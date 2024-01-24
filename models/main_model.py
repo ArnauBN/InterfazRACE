@@ -8,9 +8,12 @@ from .experiments_model import ExperimentsModel
 from .urteleoperado_model import URTeleoperadoDevice
 from .camara_model import CamaraDevice
 from .urautonomo_model import URautonomoDevice
-from .endostitch_model import EndostitchDevice, startROS
+from .endostitch_model import EndostitchDevice
 from .razonador_model import RazonadorDevice
 from .phantom_model import PhantomDevice
+
+from .endostitch_model import startROS as endo_startROS
+from .razonador_model import startROS as razonador_startROS
 
 from PyQt5.QtCore import QObject, pyqtSignal
 
@@ -21,8 +24,8 @@ class MainModel:
         self.URteleoperado = URTeleoperadoDevice()
         self.URautonomo    = URautonomoDevice()
         self.camara        = CamaraDevice()
-        self.endostitch    = EndostitchDevice(state=0, startROS=startROS)
-        self.razonador     = RazonadorDevice()
+        self.endostitch    = EndostitchDevice(state=0, startROS=endo_startROS)
+        self.razonador     = RazonadorDevice(state=0, startROS=razonador_startROS)
         self.phantom       = PhantomDevice()
         
         self.experiments   = ExperimentsModel()
@@ -44,11 +47,6 @@ class MainModel:
     
     def setupEndostitch(self):
         pass
-        # try:
-        #     self.endostitch.Serial(port='COM3', baudrate=9600, timeout=None)
-        # except Exception as e:
-        #     print('Cannot communicate with endostitch.')
-        #     print(e)
     
     def setupRazonador(self):
         pass

@@ -38,9 +38,16 @@ class RazonadorDevice:
         self.pub1 = rospy.Publisher('cmd_key', UInt8MultiArray, queue_size=10)
         rospy.Subscriber("stateMachine", String, self.callback)
 
+    def _savePublish(self, data):
+        try:
+            self.pub.publish(None, data)
+        except Exception as e:
+            print("ROS Publish Exception in razonador:")
+            print(e)
+
     def changeFase(self, newFase):
         vector = self.fase2code(newFase)
-        self.pub1.publish(None,vector)
+        self._savePublish(vector)
     
     def fase2code(self, fase):
         if str(fase)=='1':
@@ -61,17 +68,19 @@ class RazonadorDevice:
             return [0, 1, 1, 1, 0]
         elif str(fase)=='9':
             return [0, 0, 1, 1, 1]
+        elif str(fase)=='0':
+            return [1, 1, 1, 1, 1] # RESET
         else:
             return
+    
     def callback(self, data):
         try: 
-            numero = re.search(r'\d+',data.data).group()
+            numero = re.search(r'\d+', data.data).group()
             nint = int(numero)
             self.com.faseChanged.emit(nint)
-        except Exception:
-            pass
-        
-        
+        except Exception as e:
+            print("Exception in razonador:")
+            print(e)
 
     @property
     def state(self):
