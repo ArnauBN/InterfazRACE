@@ -8,7 +8,7 @@ from models.experiment_model import Experiment
 from views.experiment_view import ExperimentView
 from PyQt5.QtCore import Qt
 
-from utils.DFDobjects import ProcessItem
+from utils.DFDGUIobjects import ProcessItem
 
 #%%
 class ExperimentController:
@@ -23,9 +23,20 @@ class ExperimentController:
         """ExperimentController Constructor.
         
         Requires an instance of the main controller and an experiment index.
-        
         Creates an instance of Experiment and ExperimentView, connects each
         button to a method. Starts the camera threads.
+        
+        Parameters
+        ----------
+        MainController : MainController
+            MainController instance.
+        idx : int
+            Experiment index.
+
+        Returns
+        -------
+        None.
+
         """
         self.model = Experiment()
         self.view = ExperimentView()
@@ -39,36 +50,28 @@ class ExperimentController:
         self.mainController.model.com.razonadorFaseChanged.connect(self.on_razonador_fase_changed)
         
 
-
         self.addItems2DFD()
 
         self.view.show()
         self.startCameras()
 
     def addItems2DFD(self):
-        self.p1 = ProcessItem(1, 200, 100, 'Fase 1', self.mainController.model.razonador)
-        self.p2 = ProcessItem(2, 200, 150, 'Fase 2', self.mainController.model.razonador)
-        self.p3 = ProcessItem(3, 200, 200, 'Fase 3', self.mainController.model.razonador)
-        self.p4 = ProcessItem(4, 200, 250, 'Fase 4', self.mainController.model.razonador)
-        self.p5 = ProcessItem(5, 200, 300, 'Fase 5', self.mainController.model.razonador)
-        self.p6 = ProcessItem(6, 200, 350, 'Fase 6', self.mainController.model.razonador)
-        self.p7 = ProcessItem(7, 200, 400, 'Fase 7', self.mainController.model.razonador)
-        self.p8 = ProcessItem(8, 200, 450, 'Fase 8', self.mainController.model.razonador)
-        self.p9 = ProcessItem(9, 200, 500, 'Fase 9', self.mainController.model.razonador)
+        """
+        Creates and adds all DFD items to the view's scene based on the
+        selected experiment.
 
-        self.view.scene.addItem(self.p1)
-        self.view.scene.addItem(self.p2)
-        self.view.scene.addItem(self.p3)
-        self.view.scene.addItem(self.p4)
-        self.view.scene.addItem(self.p5)
-        self.view.scene.addItem(self.p6)
-        self.view.scene.addItem(self.p7)
-        self.view.scene.addItem(self.p8)
-        self.view.scene.addItem(self.p9)
+        Returns
+        -------
+        None.
+
+        """
+        for i,dfdItem in enumerate(self.experiment.DFD.itemList):
+            dfdItem.guiObject = ProcessItem(dfdItem.id, 200, 100 + 50*i, dfdItem.string, self.mainController.model.razonador)
+            self.view.scene.addItem(dfdItem.guiObject)
 
     def on_click_continuarButton(self):
         """
-        Method tied to continuar button. Calls model.start().
+        Slot tied to continuar button. Calls model.start().
 
         Returns
         -------
@@ -79,7 +82,7 @@ class ExperimentController:
     
     def on_click_terminarButton(self):
         """
-        Method tied to terminar button. Calls model.end().
+        Slot tied to terminar button. Calls model.end().
 
         Returns
         -------
@@ -90,7 +93,7 @@ class ExperimentController:
     
     def on_click_stopButton(self):
         """
-        Method tied to stop button. Calls model.stop().
+        Slot tied to stop button. Calls model.stop().
 
         Returns
         -------
@@ -113,33 +116,20 @@ class ExperimentController:
             self.view.startCameras()
 
     def on_razonador_fase_changed(self, newFase):
-        self.p1.setBrush(Qt.lightGray)
-        self.p2.setBrush(Qt.lightGray)
-        self.p3.setBrush(Qt.lightGray)
-        self.p4.setBrush(Qt.lightGray)
-        self.p5.setBrush(Qt.lightGray)
-        self.p6.setBrush(Qt.lightGray)
-        self.p7.setBrush(Qt.lightGray)
-        self.p8.setBrush(Qt.lightGray)
-        self.p9.setBrush(Qt.lightGray)
-        if newFase == 1:
-            self.p1.setBrush(Qt.green)
-        if newFase == 2:
-            self.p2.setBrush(Qt.green)
-        if newFase == 3:
-            self.p3.setBrush(Qt.green)
-        if newFase == 4:
-            self.p4.setBrush(Qt.green)
-        if newFase == 5:
-            self.p5.setBrush(Qt.green)
-        if newFase == 6:
-            self.p6.setBrush(Qt.green)
-        if newFase == 7:
-            self.p7.setBrush(Qt.green)
-        if newFase == 8:
-            self.p8.setBrush(Qt.green)
-        if newFase == 9:
-            self.p9.setBrush(Qt.green)
+        """
+        Slot tied to the razonadorFaseChanged signal. Changes the color of the
+        processes in the DFD view to green or lightgray.
+
+        Returns
+        -------
+        None.
+
+        """
+        for i,dfdItem in enumerate(self.experiment.DFD.itemList):
+            if newFase == dfdItem.id:
+                dfdItem.guiObject.setBrush(Qt.green)
+            else:
+                dfdItem.guiObject.setBrush(Qt.lightGray)
 
 
 
