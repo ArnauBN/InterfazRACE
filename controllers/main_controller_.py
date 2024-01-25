@@ -20,7 +20,6 @@ class MainController:
     pressed.
     Adds functionality to the buttons.
     """
-    
     def __init__(self):
         """MainController Constructor.
         
@@ -28,6 +27,11 @@ class MainController:
         a method.
         When the experiment window is closed, the experimentController object
         is deleted.
+
+        Returns
+        -------
+        None.
+
         """
         self.model = MainModel()
         self.view = MainView()
@@ -60,6 +64,15 @@ class MainController:
     
     
     def on_endostitch_state_changed(self, newState):
+        """
+        Slot tied to endostitchStateChanged signal. Changes the main view's
+        state and hides or shows the endostitch window accordingly.
+
+        Returns
+        -------
+        None.
+
+        """
         self.view.changeState(self.view.endostitchButton, newState)
         if newState==0:
             self.endostitch_controller.view.hide()
@@ -68,7 +81,7 @@ class MainController:
     
     def on_click_URteleoperadoButton(self):
         """
-        Method tied to URteleoperado button. Changes the model's state and the
+        Slot tied to URteleoperado button. Changes the model's state and the
         view accordingly.
 
         Returns
@@ -81,7 +94,7 @@ class MainController:
     
     def on_click_URautonomoButton(self):
         """
-        Method tied to URautonomo button. Changes the model's state and the
+        Slot tied to URautonomo button. Changes the model's state and the
         view accordingly.
 
         Returns
@@ -94,7 +107,7 @@ class MainController:
     
     def on_click_camaraButton(self):
         """
-        Method tied to camara button. Changes the model's state and the view
+        Slot tied to camara button. Changes the model's state and the view
         accordingly.
 
         Returns
@@ -107,7 +120,7 @@ class MainController:
     
     def on_click_endostitchButton(self):
         """
-        Method tied to endostitch button. Changes the model's state and the
+        Slot tied to endostitch button. Changes the model's state and the
         view accordingly.
         
         Temporary: shows and hides endostitch controls.
@@ -121,7 +134,7 @@ class MainController:
     
     def on_click_razonadorButton(self):
         """
-        Method tied to razonador button. Changes the model's state and the view
+        Slot tied to razonador button. Changes the model's state and the view
         accordingly.
 
         Returns
@@ -134,7 +147,7 @@ class MainController:
     
     def on_click_phantomButton(self):
         """
-        Method tied to phantom button. Changes the model's state and the view
+        Slot tied to phantom button. Changes the model's state and the view
         accordingly.
 
         Returns
@@ -147,7 +160,7 @@ class MainController:
 
     def on_click_iniciarButton(self):
         """
-        Method tied to iniciar button. Using the currently selected experiment,
+        Slot tied to iniciar button. Using the currently selected experiment,
         creates an instance of ExperimentController (which will show the
         experiment window) and connects the experiment view's closed signal 
         with the experimentWindowClosed method.
@@ -163,7 +176,7 @@ class MainController:
     
     def experimentWindowClosed(self):
         """
-        Method tied to the experiment view's closed signal. Deletes the 
+        Slot tied to the experiment view's closed signal. Deletes the 
         experiment controller instance when the window is closed.
 
         Returns

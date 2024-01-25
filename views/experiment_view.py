@@ -13,7 +13,7 @@ import pathlib
 
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
 from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
-from utils.DFDobjects import ProcessItem, DataFlowItem, CustomScene
+from utils.DFDGUIobjects import CustomScene
 
 
 #%%
@@ -26,7 +26,6 @@ class ExperimentView(QWidget):
     A .ui file is loaded and some images are added.
     The closeEvent() method is overrriden to stop the camera threads.
     """
-    
     def __init__(self):
         """ExperimentView Constructor.
         
@@ -40,6 +39,11 @@ class ExperimentView(QWidget):
         Has a QGraphicsView object for Data Flow Diagrams.
         
         Creates an instance of Communicate.
+
+        Returns
+        -------
+        None.
+
         """
         super().__init__()
         self.setPaths()
@@ -77,7 +81,6 @@ class ExperimentView(QWidget):
         self.CameraWorker1 = RealSenseCameraWorker(verbose=Verbose)
         self.CameraWorker1.frame_signal.connect(self.ImageUpdateSlot1)
         
-        
         self.drawGraphics()
     
     def setPaths(self):
@@ -99,7 +102,7 @@ class ExperimentView(QWidget):
         
     def ImageUpdateSlot0(self, Image):
         """
-        Method tied to camera worker 0 (regular camera). Updates frame.
+        Slot tied to camera worker 0 (regular camera). Updates frame.
 
         Parameters
         ----------
@@ -116,7 +119,7 @@ class ExperimentView(QWidget):
     
     def ImageUpdateSlot1(self, depth_qimage):
         """
-        Method tied to camera worker 1 (RealSense Depth camera). Updates frame.
+        Slot tied to camera worker 1 (RealSense Depth camera). Updates frame.
 
         Parameters
         ----------
@@ -187,7 +190,8 @@ class ExperimentView(QWidget):
         None.
 
         """
-        self.scene = QGraphicsScene(-500, -1000, 1000, 2000)
+        # self.scene = QGraphicsScene(-500, -1000, 1000, 2000)
+        self.scene = QGraphicsScene()
         # self.scene = CustomScene()
         self.whiteBrush = QBrush(Qt.white)
         self.grayBrush = QBrush(Qt.gray)

@@ -31,7 +31,7 @@ class Device:
             aimedState = 0
         self.state = aimedState
 
- 
+
     # This should probably be Async
     def write(self, code):
         pass

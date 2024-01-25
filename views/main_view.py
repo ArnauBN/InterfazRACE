@@ -21,13 +21,17 @@ class MainView(QMainWindow):
     A .ui file is loaded and some images and icons are added.
     The closeEvent() method is overrriden to close all other windows as well.
     """
-    
     def __init__(self):
         """MainView Constructor.
         
         Calls super().__init__(), loads main_view.ui file, sets Icons for each
         button, sets the title and title format using html and a logo, adds
         three more logos to the side using the labels defined in the .ui file.
+
+        Returns
+        -------
+        None.
+
         """
         super().__init__()
         self.setPaths()
