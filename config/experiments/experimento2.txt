@@ -1,0 +1,6 @@
+# Experimento razonador 5 fases
+process	P1	Fase 1
+process	P2	Fase 2
+process	P3	Fase 3
+process	P4	Fase 4
+process	P5	Fase 5

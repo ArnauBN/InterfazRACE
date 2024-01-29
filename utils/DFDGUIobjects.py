@@ -5,7 +5,7 @@ Created on Thu Jan 18 11:49:08 2024
 @author: arnau
 """
 
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsEllipseItem, QGraphicsTextItem, QGraphicsLineItem, QGraphicsScene
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsEllipseItem, QGraphicsTextItem, QGraphicsLineItem, QGraphicsScene, QGraphicsRectItem
 from PyQt5.QtCore import Qt, QRectF
 from PyQt5.QtGui import QPen, QColor
 
@@ -194,6 +194,35 @@ class DataFlowItem(QGraphicsLineItem):
         self.setPen(QPen(Qt.black, 2))
         # self.setLine(source.x() + 25, source.y() + 25, destination.x() + 25, destination.y() + 25)
         self.setLine(source.x(), source.y(), destination.x(), destination.y())
+
+
+
+class ResetButton(QGraphicsRectItem):
+    def __init__(self, x, y, text="Reset", razonadorOBj=None):
+        super().__init__(x, y, 100, 50)
+        self.setAcceptHoverEvents(True)
+        self.setBrush(Qt.lightGray)
+        self.razonadorOBj = razonadorOBj        
+        
+        self.textItem = TextItem(text, self)
+        self.textItem.setPos(x, y)
+        self.textItem.adjust_font_size(self.rect().width(), self.rect().height())
+
+    def hoverEnterEvent(self, event):
+        self.setBrush(Qt.gray)
+        self.setCursor(Qt.PointingHandCursor)
+
+    def hoverLeaveEvent(self, event):
+        self.setBrush(Qt.lightGray)
+        self.setCursor(Qt.ArrowCursor)
+
+    def mousePressEvent(self, event):
+        if self.razonadorOBj is not None:
+            self.razonadorOBj.changeFase("0")
+
+
+
+
 
 
 class CustomScene(QGraphicsScene):
