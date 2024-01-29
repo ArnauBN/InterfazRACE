@@ -40,15 +40,15 @@ class MainModel:
         None.
 
         """
+        self.experiments   = ExperimentsModel()
+        self.experiments.loadExperiments()
+        
         self.URteleoperado = URTeleoperadoDevice()
         self.URautonomo    = URautonomoDevice()
         self.camara        = CamaraDevice()
         self.endostitch    = EndostitchDevice(state=0, startROS=endo_startROS)
-        self.razonador     = RazonadorDevice(state=0, startROS=razonador_startROS)
+        self.razonador     = RazonadorDevice(state=0, startROS=razonador_startROS, experimentsList=self.experiments.names)
         self.phantom       = PhantomDevice()
-        
-        self.experiments   = ExperimentsModel()
-        self.experiments.loadExperiments()
         
         self.endostitch.com.stateChanged.connect(self.updateEndostitchState)
         self.razonador.com.faseChanged.connect(self.updateRazonadorFase)

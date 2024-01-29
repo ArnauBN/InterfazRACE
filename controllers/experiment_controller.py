@@ -8,7 +8,8 @@ from models.experiment_model import Experiment
 from views.experiment_view import ExperimentView
 from PyQt5.QtCore import Qt
 
-from utils.DFDGUIobjects import ProcessItem, ResetButton
+from widgets.DFDGUIobjects import ProcessItem, ResetButton
+
 
 #%%
 class ExperimentController:
@@ -43,6 +44,7 @@ class ExperimentController:
         self.mainController = MainController
         
         self.experiment = self.mainController.model.experiments[idx]
+        self.mainController.model.razonador.experiment = self.experiment.name
         
         self.view.continuarButton.clicked.connect(self.on_click_continuarButton)
         self.view.terminarButton.clicked.connect(self.on_click_terminarButton)

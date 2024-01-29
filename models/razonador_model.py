@@ -28,7 +28,7 @@ class RazonadorDevice:
     Has a com.faseChanged signal.
     Only starts ROS if startROS is True.
     """
-    def __init__(self, state=0, startROS=True):
+    def __init__(self, state=0, startROS=True, experimentsList=None, experiment=None):
         """RazonadorDevice constructor.
         
         Calls super().__init__(). Starts ROS node if startROS is true. Creates
@@ -51,7 +51,29 @@ class RazonadorDevice:
         self._state = state
         if startROS: self._startROS()
         self.com = Communicate()
+        self.experimentsList = experimentsList
+        self._experiment = experiment
+        self._experimentIndex = self.experimentsList.index(experiment) if experiment is not None else 0
 
+    @property
+    def experiment(self):
+        return self._experiment
+
+    @experiment.setter
+    def experiment(self, newExpName):
+        self._experiment = newExpName
+        self.experimentIndex = self.experimentsList.index(newExpName)
+
+    @property
+    def experimentIndex(self):
+        return self._experimentIndex
+
+    @experimentIndex.setter
+    def experimentIndex(self, newExpIdx):
+        self._experiment = self.experimentsList[newExpIdx]
+        self._experimentIndex = newExpIdx
+
+    
     def _startROS(self):
         """
         Starts ROS node. Publisher and subscriber.
@@ -101,46 +123,68 @@ class RazonadorDevice:
 
         """
         vector = self.fase2code(newFase)
-        self._savePublish(vector)
-    
+        if self.state == 1:
+            self._savePublish(vector)
+        else:
+            print(f"Razonador state is {self.state}. Cannot publish.")
+
     def fase2code(self, fase: str | int):
         """
-        Parses the phase (from 0 to 9) to the correct 5bit code (list of 5 1s
-        or 0s). Return None if the fase is not available.
+        Parses the phase to the correct code (list of 1s or 0s). Each 
+        experiment has a different set of codes. Returns None if the fase is
+        not available.
 
         Parameters
         ----------
         fase : str | int
             Available phases range from 0 to 9.
-
+        
         Returns
         -------
         list or None
             Equivalent 5bit code.
 
         """
-        if str(fase)=='1':
-            return [0, 0, 1, 0, 1]
-        elif str(fase)=='2':
-            return [0, 1, 1, 0, 1]
-        elif str(fase)=='3':
-            return [1, 1, 0, 0, 1]
-        elif str(fase)=='4':
-            return [1, 1, 0, 1, 1]
-        elif str(fase)=='5':
-            return [1, 1, 0, 1, 0]
-        elif str(fase)=='6':
-            return [1, 1, 0, 0, 0]
-        elif str(fase)=='7':
-            return [0, 1, 1, 0, 0]
-        elif str(fase)=='8':
-            return [0, 1, 1, 1, 0]
-        elif str(fase)=='9':
-            return [0, 0, 1, 1, 1]
-        elif str(fase)=='0':
-            return [1, 1, 1, 1, 1] # RESET
-        else:
+        if self.experimentIndex > len(self.experimentsList)-1:
             return
+        
+        if fase == '0':
+            return [1, 1, 1, 1, 1] # RESET
+        
+        if self.experimentIndex==0:
+            if str(fase)=='1':
+                return [0, 0, 1, 0, 1]
+            elif str(fase)=='2':
+                return [0, 1, 1, 0, 1]
+            elif str(fase)=='3':
+                return [1, 1, 0, 0, 1]
+            elif str(fase)=='4':
+                return [1, 1, 0, 1, 1]
+            elif str(fase)=='5':
+                return [1, 1, 0, 1, 0]
+            elif str(fase)=='6':
+                return [1, 1, 0, 0, 0]
+            elif str(fase)=='7':
+                return [0, 1, 1, 0, 0]
+            elif str(fase)=='8':
+                return [0, 1, 1, 1, 0]
+            elif str(fase)=='9':
+                return [0, 0, 1, 1, 1]
+            else:
+                return
+        elif self.experimentIndex==1:
+            if str(fase)=='1':
+                return [0, 0, 1, 0, 1]
+            elif str(fase)=='2':
+                return [0, 1, 1, 0, 1]
+            elif str(fase)=='3':
+                return [1, 1, 0, 0, 1]
+            elif str(fase)=='4':
+                return [1, 1, 0, 1, 1]
+            elif str(fase)=='5':
+                return [1, 1, 0, 1, 0]
+            else:
+                return
     
     def callback(self, data):
         """

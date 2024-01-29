@@ -6,9 +6,13 @@ Created on Wed Jan 17 17:57:38 2024
 """
 import pathlib
 
+
+#%%
 PATH_TO_PROJECT = pathlib.Path().resolve() # current working directory
 # PATH_TO_PROJECT = './catkin_ws/src/interfazV0/src'
 
-CAMERA_0_INDEX = 0 # change this depending on the number of cameras connected
+# change this depending on the number of cameras connected
+CAMERA_0_INDEX = 0
 
+# Implemented Data-Flow-Diagram items
 ACCEPTED_DFD_ITEM_TYPES = ['process']
