@@ -4,7 +4,7 @@ Created on Wed Jan 24 18:56:38 2024
 
 @author: arnau
 """
-from utils.DFDGUIobjects import ProcessItem
+from widgets.DFDGUIobjects import ProcessItem
 from utils.globals import ACCEPTED_DFD_ITEM_TYPES
 from utils.generic import findFirstNumber
 
