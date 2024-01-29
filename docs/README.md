@@ -1,5 +1,4 @@
-Interfaz Gráfica Robot
----
+# Interfaz Gráfica Robot
 
 Para establecer el entorno virtual de Python, desde miniconda/anaconda prompt:
 
@@ -9,9 +8,9 @@ Este entorno no incluye rospy
 
 ---
 
-# Estructura
+## Estructura
 
-## Carpetas
+### Carpetas
 
 `config\experiments`: Los archivos contenidos en esta carpeta son archivos de texto que definen los experimentos. 
 
