@@ -8,7 +8,7 @@ from models.experiment_model import Experiment
 from views.experiment_view import ExperimentView
 from PyQt5.QtCore import Qt
 
-from utils.DFDGUIobjects import ProcessItem
+from utils.DFDGUIobjects import ProcessItem, ResetButton
 
 #%%
 class ExperimentController:
@@ -65,6 +65,9 @@ class ExperimentController:
         None.
 
         """
+        resetItem = ResetButton(200, 0, "Reset", self.mainController.model.razonador)
+        self.view.scene.addItem(resetItem)
+        
         for i,dfdItem in enumerate(self.experiment.DFD.itemList):
             dfdItem.guiObject = ProcessItem(dfdItem.id, 200, 100 + 50*i, dfdItem.string, self.mainController.model.razonador)
             self.view.scene.addItem(dfdItem.guiObject)

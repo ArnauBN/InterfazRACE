@@ -197,6 +197,7 @@ class ExperimentView(QWidget):
         self.grayBrush = QBrush(Qt.gray)
         self.pen = QPen(Qt.black)
         
+        # self.flujogramaView.setAlignment(Qt.AlignLeft | Qt.AlignTop) # aligns center of scene and view
         self.flujogramaView.setGeometry(0, 0, int(self.scene.width()), int(self.scene.height()))
         
         # data_flow12 = DataFlowItem(p1, p2)
