@@ -46,12 +46,10 @@ Este entorno no incluye rospy
 ## Archivos
 `experimentos`: Actualmente definen los procesos del DFD (Data-Flow-Diagram) con el siguiente formato:
 
-`
-# Experimento 1
+`# Experimento 1
 process P1 Fase 1
 process P2 Fase 2
-process P3 Fase 3
-`
+process P3 Fase 3`
 
 Si la primera línea empieza con `#`, esta línea indica el nombre del experimento. La sintaxis empleada es la definida en: https://github.com/pbauermeister/dfd
 
