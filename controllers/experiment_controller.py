@@ -67,8 +67,8 @@ class ExperimentController:
         None.
 
         """
-        resetItem = ResetButton(200, 0, "Reset", self.mainController.model.razonador)
-        self.view.scene.addItem(resetItem)
+        self.resetItem = ResetButton(200, 0, "Reset", self.mainController.model.razonador)
+        self.view.scene.addItem(self.resetItem)
         
         for i,dfdItem in enumerate(self.experiment.DFD.itemList):
             dfdItem.guiObject = ProcessItem(dfdItem.id, 200, 100 + 50*i, dfdItem.string, self.mainController.model.razonador)
@@ -130,6 +130,11 @@ class ExperimentController:
         None.
 
         """
+        if newFase == "0":
+            self.resetItem.setBrush(Qt.green)
+        else:
+            self.resetItem.setBrush(Qt.lightGray)
+        
         for i,dfdItem in enumerate(self.experiment.DFD.itemList):
             if newFase == dfdItem.id:
                 dfdItem.guiObject.setBrush(Qt.green)
