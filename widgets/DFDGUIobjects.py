@@ -88,7 +88,7 @@ class ProcessItem(QGraphicsEllipseItem):
 
         """
         self.state ^= 1
-        if self.state==0:
+        if self.state==1:
             if self.razonadorOBj is not None:
                 self.razonadorOBj.changeFase(self.process_id)
             self.setBrush(Qt.green)
@@ -202,23 +202,32 @@ class ResetButton(QGraphicsRectItem):
         super().__init__(x, y, 100, 50)
         self.setAcceptHoverEvents(True)
         self.setBrush(Qt.lightGray)
-        self.razonadorOBj = razonadorOBj        
+        self.razonadorOBj = razonadorOBj  
+        self.state = 0
         
         self.textItem = TextItem(text, self)
         self.textItem.setPos(x, y)
         self.textItem.adjust_font_size(self.rect().width(), self.rect().height())
 
     def hoverEnterEvent(self, event):
-        self.setBrush(Qt.gray)
+        if self.state == 0:
+            self.setBrush(Qt.gray)
         self.setCursor(Qt.PointingHandCursor)
 
     def hoverLeaveEvent(self, event):
-        self.setBrush(Qt.lightGray)
+        if self.state == 0:
+            self.setBrush(Qt.lightGray)
         self.setCursor(Qt.ArrowCursor)
 
     def mousePressEvent(self, event):
         if self.razonadorOBj is not None:
             self.razonadorOBj.changeFase("0")
+        
+        self.state ^= 1
+        if self.state==1:
+            self.setBrush(Qt.green)
+        else:
+            self.setBrush(Qt.lightGray)
 
 
 

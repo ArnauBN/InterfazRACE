@@ -13,7 +13,7 @@ import pathlib
 
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
 from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
-from utils.DFDGUIobjects import CustomScene
+from widgets.DFDGUIobjects import CustomScene
 
 
 #%%
