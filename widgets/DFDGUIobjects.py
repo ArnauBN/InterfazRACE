@@ -32,13 +32,13 @@ class ProcessItem(QGraphicsEllipseItem):
         process_id : int
             Process ID.
         x : int
-            Horizontal coordinate. The origin is at the center of the
-            QGraphicsView.
+            Horizontal coordinate. The origin is at the top-left corner of the
+            QGraphicsScene.
         y : int
-            Vertical coordinate. The origin is at the center of the
-            QGraphicsView.
+            Vertical coordinate. The origin is at the top-left corner of the
+            QGraphicsScene.
         text : str, optional
-            Text to be places inside (the string of the DFDitem). If None, the
+            Text to be placed inside (the string of the DFDitem). If None, the
             id is used instead. The default is None.
         razonadorOBj : razonadorDevice, optional
             razonadorDevice instance. The default is None.
@@ -196,9 +196,40 @@ class DataFlowItem(QGraphicsLineItem):
         self.setLine(source.x(), source.y(), destination.x(), destination.y())
 
 
-
 class ResetButton(QGraphicsRectItem):
+    """"Handles the visual representation of the RESET button
+    
+    Inherits from QGraphicsRectItem.
+    Overrides mousePressEvent, hoverEnterEvent and hoverLeaveEvent.
+    """
     def __init__(self, x, y, text="Reset", razonadorOBj=None):
+        """ResetButton Constructor
+        
+        Calls super().__init__(x, y, 100, 50).
+        
+        Sets the coordinates, text and the razonador instance.
+        
+        The razonador object is used to force the phase '0'.
+
+        Parameters
+        ----------
+        x : int
+            Horizontal coordinate. The origin is at the top-left corner of the
+            QGraphicsScene.
+        y : int
+            Vertical coordinate. The origin is at the top-left corner of the
+            QGraphicsScene.
+        text : str, optional
+            Text to be placed inside (the string of the DFDitem). The default
+            is "Reset".
+        razonadorOBj : razonadorDevice, optional
+            razonadorDevice instance. The default is None.
+
+        Returns
+        -------
+        None.
+
+        """
         super().__init__(x, y, 100, 50)
         self.setAcceptHoverEvents(True)
         self.setBrush(Qt.lightGray)
@@ -210,16 +241,58 @@ class ResetButton(QGraphicsRectItem):
         self.textItem.adjust_font_size(self.rect().width(), self.rect().height())
 
     def hoverEnterEvent(self, event):
+        """
+        Overrides parent's hoverEnterEvent. Sets a pointing hand cursor and the
+        gray color.
+
+        Parameters
+        ----------
+        event : QEvent
+            hoverEnterEvent event.
+        
+        Returns
+        -------
+        None.
+
+        """
         if self.state == 0:
             self.setBrush(Qt.gray)
         self.setCursor(Qt.PointingHandCursor)
 
     def hoverLeaveEvent(self, event):
+        """
+        Overrides parent's hoverLeaveEvent. Sets an arrow cursor and the
+        lightgray color.
+
+        Parameters
+        ----------
+        event : QEvent
+            hoverLeaveEvent event.
+        
+        Returns
+        -------
+        None.
+
+        """
         if self.state == 0:
             self.setBrush(Qt.lightGray)
         self.setCursor(Qt.ArrowCursor)
 
     def mousePressEvent(self, event):
+        """
+        Overrides parent's mousePressEvent. Changes the razonador phase, the 
+        button's state and its color.
+
+        Parameters
+        ----------
+        event : QEvent
+            mousePressEvent event.
+
+        Returns
+        -------
+        None.
+
+        """
         if self.razonadorOBj is not None:
             self.razonadorOBj.changeFase("0")
         
