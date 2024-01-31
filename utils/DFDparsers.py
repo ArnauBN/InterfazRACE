@@ -82,7 +82,7 @@ class DFD:
     
     Has a list of items. Further functionality could be added.
     """
-    def __init__(self, itemList: list[DFDitem]):
+    def __init__(self, itemList: list):
         """DFD constructor
         
         Sets the list of items.
@@ -126,7 +126,7 @@ def parseSingleLine(line: str) -> DFDitem:
     lineList = line.split(maxsplit=2)  
     return DFDitem(lineList[0], lineList[2].rstrip(), lineList[1])
 
-def parseMultipleLines(data: list[str]) -> DFD:
+def parseMultipleLines(data: list) -> DFD:
     """
     Parses multiple lines, each one to a DFDitem. The whole list is returned as
     a DFD object.

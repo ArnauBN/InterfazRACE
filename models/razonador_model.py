@@ -152,7 +152,7 @@ class RazonadorDevice:
             print("ROS Publish Exception in razonador:")
             print(e)
 
-    def changeFase(self, newFase: str | int):
+    def changeFase(self, newFase):
         """
         Publishes a new phase.
 
@@ -172,7 +172,7 @@ class RazonadorDevice:
         else:
             print(f"Razonador state is {self.state}. Cannot publish.")
 
-    def fase2code(self, fase: str | int):
+    def fase2code(self, fase):
         """
         Parses the phase to the correct code (list of 1s or 0s). Each 
         experiment has a different set of codes. Returns None if the fase is
