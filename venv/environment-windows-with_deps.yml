@@ -67,5 +67,5 @@ dependencies:
   - zstd=1.5.5
   - pip:
       - numpy==1.26.3
-      - opencv-python==4.9.0.80
+      - opencv-python-headless==4.9.0.80
       - pyrealsense2==2.54.2.5684
