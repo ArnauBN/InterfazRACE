@@ -57,19 +57,63 @@ class RazonadorDevice:
 
     @property
     def experiment(self):
+        """
+        Getter method for property: experiment.
+
+        Returns
+        -------
+        str
+            Currently selected experiment.
+
+        """
         return self._experiment
 
     @experiment.setter
     def experiment(self, newExpName):
+        """
+        Setter method for property: experiment.
+
+        Parameters
+        ----------
+        newExpName : str
+            New experiment name.
+
+        Returns
+        -------
+        None.
+
+        """
         self._experiment = newExpName
         self.experimentIndex = self.experimentsList.index(newExpName)
 
     @property
     def experimentIndex(self):
+        """
+        Getter method for property: experimentIndex.
+
+        Returns
+        -------
+        int
+            Index of currently selected experiment.
+
+        """
         return self._experimentIndex
 
     @experimentIndex.setter
     def experimentIndex(self, newExpIdx):
+        """
+        Setter method for property: experimentIndex.
+
+        Parameters
+        ----------
+        newExpIdx : int
+            New experiment index.
+
+        Returns
+        -------
+        None.
+
+        """
         self._experiment = self.experimentsList[newExpIdx]
         self._experimentIndex = newExpIdx
 
