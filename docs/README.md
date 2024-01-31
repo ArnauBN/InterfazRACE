@@ -2,9 +2,9 @@
 
 Para establecer el entorno virtual de Python, desde miniconda/anaconda prompt:
 
-`conda env create -f environment.yml`
+`conda env create -f environment-no_deps.yml`
 
-Este entorno no incluye rospy
+Este entorno no incluye rospy.
 
 ---
 
