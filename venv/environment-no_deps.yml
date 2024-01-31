@@ -1,0 +1,12 @@
+name: InterfazGraficaRobotENV
+channels:
+  - defaults
+dependencies:
+  - python=3.11.7
+  - spyder-kernels=2.4.4
+  - pyqt=5.15.10
+  - pyserial=3.5
+  - numpy==1.26.3
+  - pip:
+    - opencv-python==4.9.0.80
+    - pyrealsense2==2.54.2.5684
