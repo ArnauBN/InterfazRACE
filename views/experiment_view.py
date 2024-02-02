@@ -8,12 +8,13 @@ from PyQt5 import uic
 from PyQt5.QtWidgets import QWidget, QGraphicsScene
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QMetaObject, Q_ARG
 from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen
-
+import cv2
 import pathlib
 
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
 from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
 from widgets.DFDGUIobjects import CustomScene
+from utils.generic import addOverlayCircle
 
 
 #%%
@@ -82,6 +83,8 @@ class ExperimentView(QWidget):
         self.CameraWorker1.frame_signal.connect(self.ImageUpdateSlot1)
         
         self.drawGraphics()
+        self.DRAW_STITCHES = False
+        self.DEPTH = False
     
     def setPaths(self):
         """
@@ -114,10 +117,11 @@ class ExperimentView(QWidget):
         None.
 
         """
+        return
         if Verbose: print('recieve frames from cam 0')
         self.Cam0Label.setPixmap(QPixmap.fromImage(Image))
     
-    def ImageUpdateSlot1(self, depth_qimage):
+    def ImageUpdateSlot1(self, color_qimage, depth_qimage):
         """
         Slot tied to camera worker 1 (RealSense Depth camera). Updates frame.
 
@@ -132,7 +136,17 @@ class ExperimentView(QWidget):
 
         """
         if Verbose: print('recieve frames from cam 1')
-        QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, QPixmap.fromImage(depth_qimage)))
+        img = depth_qimage if self.DEPTH else color_qimage
+        
+        if self.DRAW_STITCHES:
+            pximg = QPixmap(img)
+            circle_radius = min(pximg.width(), pximg.height()) // 6
+            circle_x = pximg.width() // 2 - circle_radius
+            circle_y = pximg.height() // 2 - circle_radius
+            pixmapImg = addOverlayCircle(img, circle_x, circle_y, circle_radius)
+            QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, pixmapImg))
+        else:
+            QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, QPixmap.fromImage(img)))
 
     def stopCameras(self):
         """

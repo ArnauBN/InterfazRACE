@@ -17,7 +17,7 @@ import rospy
 
 #%%
 def mainROS():
-    rospy.init_node('interfaz',anonymous=True)
+    rospy.init_node('interfaz', anonymous=True)
     main()
 
 if __name__ == '__main__':
