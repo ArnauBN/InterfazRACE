@@ -4,7 +4,16 @@ Created on Tue Jan 16 13:12:03 2024
 
 @author: arnau
 """
+startROS=True
+try:
+    from utils.user_client_camera import user_client
+except ModuleNotFoundError as e:
+    print(e)
+    print('Not using ROS')
+    startROS = False
 
+
+#%%
 class CamaraDevice:
     """Handles the camera state."""
     def __init__(self, state=0):
@@ -24,6 +33,14 @@ class CamaraDevice:
 
         """
         self._state = state
+    
+    
+    def getStitches(self):
+        if startROS:
+            print("Requesting stitches")        
+            self.resp = user_client()
+            print("Finish!")
+    
     
     @property
     def state(self):

@@ -51,6 +51,8 @@ class ExperimentController:
         self.view.stopButton.clicked.connect(self.on_click_stopButton)
         self.mainController.model.com.razonadorFaseChanged.connect(self.on_razonador_fase_changed)
         
+        self.view.depthCheckBox.stateChanged.connect(self.on_stateChanged_depthCheckBox)
+        self.view.stitchesCheckBox.stateChanged.connect(self.on_stateChanged_stitchesCheckBox)
 
         self.addItems2DFD()
 
@@ -73,6 +75,19 @@ class ExperimentController:
         for i,dfdItem in enumerate(self.experiment.DFD.itemList):
             dfdItem.guiObject = ProcessItem(dfdItem.id, 200, 100 + 50*i, dfdItem.string, self.mainController.model.razonador)
             self.view.scene.addItem(dfdItem.guiObject)
+
+    def on_stateChanged_depthCheckBox(self, state):
+        if state==0:
+            self.view.DEPTH = False
+        else:
+            self.view.DEPTH = True
+    
+    def on_stateChanged_stitchesCheckBox(self, state):
+        print(state)
+        if state==0:
+            self.view.DRAW_STITCHES = False
+        else:
+            self.view.DRAW_STITCHES = True
 
     def on_click_continuarButton(self):
         """
@@ -118,6 +133,7 @@ class ExperimentController:
 
         """
         if self.mainController.model.camara.state == 1:
+            self.mainController.model.camara.getStitches()
             self.view.startCameras()
 
     def on_razonador_fase_changed(self, newFase):
