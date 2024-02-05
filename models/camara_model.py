@@ -32,15 +32,7 @@ class CamaraDevice:
         None.
 
         """
-        self._state = state
-    
-    
-    def getStitches(self):
-        if startROS:
-            print("Requesting stitches")        
-            self.resp = user_client()
-            print("Finish!")
-    
+        self._state = state    
     
     @property
     def state(self):
@@ -88,3 +80,13 @@ class CamaraDevice:
         else: # running/busy/error -> turn off
             aimedState = 0
         self.state = aimedState
+
+
+def getStitches():
+    if startROS:
+        print("Requesting stitches")        
+        resp = user_client()
+        num = resp['num']
+        stitches = resp['stitches']
+        print("Finish!")
+        return num, stitches

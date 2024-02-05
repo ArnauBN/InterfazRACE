@@ -83,7 +83,6 @@ class ExperimentController:
             self.view.DEPTH = True
     
     def on_stateChanged_stitchesCheckBox(self, state):
-        print(state)
         if state==0:
             self.view.DRAW_STITCHES = False
         else:
@@ -133,7 +132,6 @@ class ExperimentController:
 
         """
         if self.mainController.model.camara.state == 1:
-            self.mainController.model.camara.getStitches()
             self.view.startCameras()
 
     def on_razonador_fase_changed(self, newFase):

@@ -15,6 +15,7 @@ from utils.camera_threads import CameraWorker, RealSenseCameraWorker
 from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
 from widgets.DFDGUIobjects import CustomScene
 from utils.generic import addOverlayCircle
+from models.camara_model import getStitches
 
 
 #%%
@@ -117,7 +118,6 @@ class ExperimentView(QWidget):
         None.
 
         """
-        return
         if Verbose: print('recieve frames from cam 0')
         self.Cam0Label.setPixmap(QPixmap.fromImage(Image))
     
@@ -138,7 +138,9 @@ class ExperimentView(QWidget):
         if Verbose: print('recieve frames from cam 1')
         img = depth_qimage if self.DEPTH else color_qimage
         
-        if self.DRAW_STITCHES:
+        if self.DRAW_STITCHES:      
+            # num, stitches = getStitches()
+            
             pximg = QPixmap(img)
             circle_radius = min(pximg.width(), pximg.height()) // 6
             circle_x = pximg.width() // 2 - circle_radius
