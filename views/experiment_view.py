@@ -77,6 +77,11 @@ class ExperimentView(QWidget):
         
         self.com = Communicate()
     
+        # num, stitches = getStitches()
+        print(getStitches())
+        # print(num)
+        # print(stitches)
+
         self.CameraWorker0 = CameraWorker(CAMERA_0_INDEX, verbose=Verbose) # change index depending on number of cameras connected
         self.CameraWorker0.ImageUpdate.connect(self.ImageUpdateSlot0)
         
