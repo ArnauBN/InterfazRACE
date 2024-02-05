@@ -4,14 +4,18 @@ Created on Tue Jan 16 13:12:03 2024
 
 @author: arnau
 """
+import sys
+sys.path.append('/home/nbio/catkin_ws/src/camera_pkg/scripts')
+
 startROS=True
 try:
-    from utils.user_client_camera import user_client
+    from interfaz_client_camera import interface_client
 except ModuleNotFoundError as e:
     print(e)
     print('Not using ROS')
     startROS = False
 
+# from utils.interfaz_client_camera import interface_client
 
 #%%
 class CamaraDevice:
@@ -83,10 +87,11 @@ class CamaraDevice:
 
 
 def getStitches():
-    if startROS:
-        print("Requesting stitches")        
-        resp = user_client()
-        num = resp['num']
-        stitches = resp['stitches']
-        print("Finish!")
-        return num, stitches
+    #if startROS:
+    print("Requesting stitches")        
+    resp = interface_client()
+    num = resp['num']
+    stitches = resp['stitches']
+    raw = resp['raw']
+    print("Finish!")
+    return num, stitches, raw
