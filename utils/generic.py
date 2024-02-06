@@ -50,3 +50,26 @@ def addOverlayCircle(img, x, y, r, color=(255, 0, 0, 128)):
     painter.end()
 
     return result_pixmap
+
+def addOverlayCircles(img, x_coords, y_coords, r_values, color=(255, 0, 0, 128)):
+    result_pixmap = QPixmap(img)
+    painter = QPainter(result_pixmap)
+    painter.setRenderHint(QPainter.Antialiasing)
+    overlay_color = QColor(*color) # Red with 50% transparency by default
+    painter.setBrush(overlay_color)
+    
+    for x, y, r in zip(x_coords, y_coords, r_values):
+        painter.drawEllipse(x, y, 2 * r, 2 * r)
+    
+    painter.end()
+    return result_pixmap   
+    
+def drawStitches(img, stitches_matrix):
+    x_coords = stitches_matrix[:, 0]
+    y_coords = stitches_matrix[:, 1]
+    z_coords = stitches_matrix[:, 2]
+    r_values = map_z_to_radius(z_coords, 40)
+    return addOverlayCircles(img, x_coords, y_coords, r_values, color=(255, 0, 0, 128))
+    
+def map_z_to_radius(z_coords, max_radius):
+    return max_radius / z_coords

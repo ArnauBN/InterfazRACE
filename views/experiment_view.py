@@ -14,7 +14,7 @@ import pathlib
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
 from utils.globals import PATH_TO_PROJECT
 from widgets.DFDGUIobjects import CustomScene
-from utils.generic import addOverlayCircle
+from utils.generic import addOverlayCircle, drawStitches
 from models.camara_model import getStitches
 
 
@@ -137,14 +137,15 @@ class ExperimentView(QWidget):
         if Verbose: print('recieve frames from cam 1')
         img = depth_qimage if self.DEPTH else color_qimage
         
-        if self.DRAW_STITCHES:      
-            # num, stitches = getStitches()
+        if self.DRAW_STITCHES:
+            num, stitches_raw = getStitches()
+            pixmapImg = QPixmap.fromImage(img) if stitches_raw is None else drawStitches(img, stitches_raw)
             
-            pximg = QPixmap(img)
-            circle_radius = min(pximg.width(), pximg.height()) // 6
-            circle_x = pximg.width() // 2 - circle_radius
-            circle_y = pximg.height() // 2 - circle_radius
-            pixmapImg = addOverlayCircle(img, circle_x, circle_y, circle_radius)
+            # pximg = QPixmap(img)
+            # circle_radius = min(pximg.width(), pximg.height()) // 6
+            # circle_x = pximg.width() // 2 - circle_radius
+            # circle_y = pximg.height() // 2 - circle_radius
+            # pixmapImg = addOverlayCircle(img, circle_x, circle_y, circle_radius)
             QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, pixmapImg))
         else:
             QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, QPixmap.fromImage(img)))
