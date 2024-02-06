@@ -86,10 +86,13 @@ class CamaraDevice:
 
 
 def getStitches():
-    print("Requesting stitches")        
-    resp = interface_client()
-    num = resp['num']
-    # stitches = resp['stitches'] # unsused in the interface
-    raw = resp['raw']
-    print("Finish!")
-    return num, raw
+    if startROS:
+        print("Requesting stitches")        
+        resp = interface_client()
+        num = resp['num']
+        # stitches = resp['stitches'] # unsused in the interface
+        raw = resp['raw']
+        print("Finish!")
+        return num, raw
+    else:
+        return None, None
