@@ -14,7 +14,7 @@ try:
     from std_msgs.msg import String
 except ModuleNotFoundError as e:
     print(e)
-    print('Not using ROS')
+    print('endostitch_model: Not using ROS')
     startROS = False
 
 

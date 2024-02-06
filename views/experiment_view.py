@@ -12,7 +12,7 @@ import cv2
 import pathlib
 
 from utils.camera_threads import CameraWorker, RealSenseCameraWorker
-from utils.globals import PATH_TO_PROJECT, CAMERA_0_INDEX
+from utils.globals import PATH_TO_PROJECT
 from widgets.DFDGUIobjects import CustomScene
 from utils.generic import addOverlayCircle
 from models.camara_model import getStitches
@@ -78,11 +78,11 @@ class ExperimentView(QWidget):
         self.com = Communicate()
     
         # num, stitches = getStitches()
-        print(getStitches())
+        # print(getStitches())
         # print(num)
         # print(stitches)
 
-        self.CameraWorker0 = CameraWorker(CAMERA_0_INDEX, verbose=Verbose) # change index depending on number of cameras connected
+        self.CameraWorker0 = CameraWorker(verbose=Verbose) # change index depending on number of cameras connected
         self.CameraWorker0.ImageUpdate.connect(self.ImageUpdateSlot0)
         
         self.CameraWorker1 = RealSenseCameraWorker(verbose=Verbose)

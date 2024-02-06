@@ -12,10 +12,9 @@ try:
     from interfaz_client_camera import interface_client
 except ModuleNotFoundError as e:
     print(e)
-    print('Not using ROS')
+    print('camara_model: Not using ROS')
     startROS = False
 
-# from utils.interfaz_client_camera import interface_client
 
 #%%
 class CamaraDevice:
@@ -87,11 +86,10 @@ class CamaraDevice:
 
 
 def getStitches():
-    #if startROS:
     print("Requesting stitches")        
     resp = interface_client()
     num = resp['num']
-    stitches = resp['stitches']
+    # stitches = resp['stitches'] # unsused in the interface
     raw = resp['raw']
     print("Finish!")
-    return num, stitches, raw
+    return num, raw

@@ -21,7 +21,7 @@ class CameraWorker(QThread):
     """
     ImageUpdate = pyqtSignal(QImage)
     
-    def __init__(self, deviceIndex=0, verbose=False):
+    def __init__(self, verbose=False):
         """CameraWorker constructor
         
         Sets the deviceIndex. If verbose is True, the thread will print 
@@ -42,7 +42,7 @@ class CameraWorker(QThread):
 
         """
         super().__init__()
-        self.deviceIndex = deviceIndex
+        self.deviceIndex = -1
         self.verbose = verbose
     
     def run(self):
@@ -55,8 +55,14 @@ class CameraWorker(QThread):
 
         """
         if self.verbose: print('\nrun feed')
-        self.ThreadActive = True       
-        Capture = cv2.VideoCapture(self.deviceIndex) 
+        self.ThreadActive = True
+        
+        for i in range(-1,5): # try 6 camera indices (including -1)
+            self.deviceIndex = i
+            Capture = cv2.VideoCapture(self.deviceIndex)
+            if Capture is not None and Capture.isOpened():
+                break
+        
         if Capture is not None and Capture.isOpened():
             while self.ThreadActive:
                 ret, frame = Capture.read()
