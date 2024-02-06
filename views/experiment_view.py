@@ -69,18 +69,12 @@ class ExperimentView(QWidget):
         self.UVALabel.setPixmap(UVApixmap)
         self.UMALabel.setPixmap(UMApixmap)
         
-        
         grey = QPixmap(640, 480)
         grey.fill(QColor('darkGray'))
         self.Cam0Label.setPixmap(grey)
         self.Cam1Label.setPixmap(grey)
         
         self.com = Communicate()
-    
-        # num, stitches = getStitches()
-        # print(getStitches())
-        # print(num)
-        # print(stitches)
 
         self.CameraWorker0 = CameraWorker(verbose=Verbose) # change index depending on number of cameras connected
         self.CameraWorker0.ImageUpdate.connect(self.ImageUpdateSlot0)
