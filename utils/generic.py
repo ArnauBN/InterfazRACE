@@ -68,7 +68,7 @@ def drawStitches(img, stitches_matrix):
     x_coords = stitches_matrix[:, 0]
     y_coords = stitches_matrix[:, 1]
     z_coords = stitches_matrix[:, 2]
-    r_values = map_z_to_radius(z_coords, 40)
+    r_values = map_z_to_radius(z_coords, 60)
     return addOverlayCircles(img, x_coords, y_coords, r_values, color=(255, 0, 0, 128))
     
 def map_z_to_radius(z_coords, max_radius):

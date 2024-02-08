@@ -153,7 +153,7 @@ class RealSenseCameraWorker(QThread):
                     if color_frame:
                         color_npframe = np.asanyarray(color_frame.get_data())
                         color_image = color_npframe
-                        color_qimage = QImage(color_image.data, color_image.shape[1], color_image.shape[0], QImage.Format_RGB888)
+                        color_qimage = QImage(color_image.data, color_image.shape[1], color_image.shape[0], QImage.Format_BGR888)
                 
                     self.frame_signal.emit(color_qimage, depth_qimage)
             except Exception as e:

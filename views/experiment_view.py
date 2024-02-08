@@ -5,7 +5,7 @@ Created on Fri Jan 12 09:55:42 2024
 @author: arnau
 """
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QGraphicsScene
+from PyQt5.QtWidgets import QWidget, QGraphicsScene, QMainWindow
 from PyQt5.QtCore import Qt, pyqtSignal, QObject, QMetaObject, Q_ARG
 from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen
 import cv2
@@ -50,6 +50,7 @@ class ExperimentView(QWidget):
         super().__init__()
         self.setPaths()
         uic.loadUi(self.uiPath, self)
+        # self.setDockOptions(QMainWindow.AllowTabbedDocks)
         
         self.label.setText(f'''
                            <html><head/><body><p><b>

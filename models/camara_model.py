@@ -84,15 +84,14 @@ class CamaraDevice:
             aimedState = 0
         self.state = aimedState
 
-
+import numpy as np
 def getStitches():
     if startROS:
-        print("Requesting stitches")        
         resp = interface_client()
         num = resp['num']
         # stitches = resp['stitches'] # unsused in the interface
         raw = resp['raw']
-        print("Finish!")
-        return num, raw
+        raw_matrix = np.array(raw).reshape(len(raw)//3, 3)
+        return num, raw_matrix
     else:
         return None, None
