@@ -5,22 +5,16 @@ Created on Fri Jan 12 09:55:42 2024
 @author: arnau
 """
 from PyQt5 import uic
-from PyQt5.QtWidgets import QWidget, QGraphicsScene, QMainWindow
-from PyQt5.QtCore import Qt, pyqtSignal, QObject, QMetaObject, Q_ARG
-from PyQt5.QtGui import QPixmap, QColor, QBrush, QPen
-import cv2
+from PyQt5.QtWidgets import QWidget, QGraphicsScene
+from PyQt5.QtCore import Qt, pyqtSignal, QObject
+from PyQt5.QtGui import QPixmap, QBrush, QPen
 import pathlib
 
-from utils.camera_threads import CameraWorker, RealSenseCameraWorker
 from utils.globals import PATH_TO_PROJECT
-from widgets.DFDGUIobjects import CustomScene
-from utils.generic import addOverlayCircle, drawStitches
-from models.camara_model import getStitches
+from .cameras_view import CamView, RealSenseCamView
 
 
 #%%
-Verbose = False  # very simple debugging/log
-
 class ExperimentView(QWidget):
     """Controls the GUI elements and appearence of the Experiment Window.
     
@@ -35,7 +29,7 @@ class ExperimentView(QWidget):
         and title format using html and a logo, adds three more logos to the
         side using the labels defined in the .ui file.
         
-        Has two camera worker threads, one for a regular cam and another for a
+        Has two camera dialogs, one for a regular cam and another for a
         RealSense Depth camera.
         
         Has a QGraphicsView object for Data Flow Diagrams.
@@ -50,8 +44,7 @@ class ExperimentView(QWidget):
         super().__init__()
         self.setPaths()
         uic.loadUi(self.uiPath, self)
-        # self.setDockOptions(QMainWindow.AllowTabbedDocks)
-        
+
         self.label.setText(f'''
                            <html><head/><body><p><b>
                            <img src="{self.logoRACEPath}"
@@ -70,22 +63,13 @@ class ExperimentView(QWidget):
         self.UVALabel.setPixmap(UVApixmap)
         self.UMALabel.setPixmap(UMApixmap)
         
-        grey = QPixmap(640, 480)
-        grey.fill(QColor('darkGray'))
-        self.Cam0Label.setPixmap(grey)
-        self.Cam1Label.setPixmap(grey)
-        
         self.com = Communicate()
 
-        self.CameraWorker0 = CameraWorker(verbose=Verbose) # change index depending on number of cameras connected
-        self.CameraWorker0.ImageUpdate.connect(self.ImageUpdateSlot0)
-        
-        self.CameraWorker1 = RealSenseCameraWorker(verbose=Verbose)
-        self.CameraWorker1.frame_signal.connect(self.ImageUpdateSlot1)
+        self.cam0dialog = CamView()
+        self.cam1dialog = RealSenseCamView()
         
         self.drawGraphics()
-        self.DRAW_STITCHES = False
-        self.DEPTH = False
+
     
     def setPaths(self):
         """
@@ -103,54 +87,7 @@ class ExperimentView(QWidget):
         self.logoUMHPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMH.png'))
         self.logoUVAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UVA.png'))
         self.logoUMAPath = str(PATH_TO_PROJECT / pathlib.Path('resources', 'logos', 'UMA.jpeg'))
-        
-    def ImageUpdateSlot0(self, Image):
-        """
-        Slot tied to camera worker 0 (regular camera). Updates frame.
-
-        Parameters
-        ----------
-        Image : QImage
-            New frame.
-
-        Returns
-        -------
-        None.
-
-        """
-        if Verbose: print('recieve frames from cam 0')
-        self.Cam0Label.setPixmap(QPixmap.fromImage(Image))
     
-    def ImageUpdateSlot1(self, color_qimage, depth_qimage):
-        """
-        Slot tied to camera worker 1 (RealSense Depth camera). Updates frame.
-
-        Parameters
-        ----------
-        Image : QImage
-            New frame.
-
-        Returns
-        -------
-        None.
-
-        """
-        if Verbose: print('recieve frames from cam 1')
-        img = depth_qimage if self.DEPTH else color_qimage
-        
-        if self.DRAW_STITCHES:
-            num, stitches_raw = getStitches()
-            pixmapImg = QPixmap.fromImage(img) if stitches_raw is None else drawStitches(img, stitches_raw)
-            
-            # pximg = QPixmap(img)
-            # circle_radius = min(pximg.width(), pximg.height()) // 6
-            # circle_x = pximg.width() // 2 - circle_radius
-            # circle_y = pximg.height() // 2 - circle_radius
-            # pixmapImg = addOverlayCircle(img, circle_x, circle_y, circle_radius)
-            QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, pixmapImg))
-        else:
-            QMetaObject.invokeMethod(self.Cam1Label, 'setPixmap', Qt.QueuedConnection, Q_ARG(QPixmap, QPixmap.fromImage(img)))
-
     def stopCameras(self):
         """
         Stops both camera threads.
@@ -160,9 +97,10 @@ class ExperimentView(QWidget):
         None.
 
         """
-        if Verbose: print('cancel feed')
-        if self.CameraWorker0.isRunning(): self.CameraWorker0.stop()
-        if self.CameraWorker1.isRunning(): self.CameraWorker1.stop()
+        self.cam0dialog.stopCam()
+        self.cam1dialog.stopCam()
+        self.cam0dialog.hide()
+        self.cam1dialog.hide()
 
     def closeEvent(self, event):
         """
@@ -192,8 +130,12 @@ class ExperimentView(QWidget):
         None.
 
         """
-        self.CameraWorker0.start()
-        self.CameraWorker1.start()
+        self.cam0dialog.show()
+        self.cam1dialog.show()
+        self.cam0dialog.setFixedSize(self.cam0dialog.size())
+        self.cam1dialog.setFixedSize(self.cam1dialog.size())
+        self.cam0dialog.startCam()
+        self.cam1dialog.startCam()
 
 
     def drawGraphics(self):

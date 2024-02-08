@@ -51,8 +51,8 @@ class ExperimentController:
         self.view.stopButton.clicked.connect(self.on_click_stopButton)
         self.mainController.model.com.razonadorFaseChanged.connect(self.on_razonador_fase_changed)
         
-        self.view.depthCheckBox.stateChanged.connect(self.on_stateChanged_depthCheckBox)
-        self.view.stitchesCheckBox.stateChanged.connect(self.on_stateChanged_stitchesCheckBox)
+        self.view.cam1dialog.depthCheckBox.stateChanged.connect(self.on_stateChanged_depthCheckBox)
+        self.view.cam1dialog.stitchesCheckBox.stateChanged.connect(self.on_stateChanged_stitchesCheckBox)
 
         self.addItems2DFD()
 
@@ -77,16 +77,49 @@ class ExperimentController:
             self.view.scene.addItem(dfdItem.guiObject)
 
     def on_stateChanged_depthCheckBox(self, state):
+        """
+        Slot tied to profundidad Check Box. Sets self.view.cam1dialog.DEPTH.
+
+        Parameters
+        ----------
+        state : int
+            State of checkbox:
+                0 - off
+                1 - partially on
+                2 - on
+
+        Returns
+        -------
+        None.
+
+        """
         if state==0:
-            self.view.DEPTH = False
+            self.view.cam1dialog.DEPTH = False
         else:
-            self.view.DEPTH = True
+            self.view.cam1dialog.DEPTH = True
     
     def on_stateChanged_stitchesCheckBox(self, state):
+        """
+        Slot tied to profundidad Check Box. Sets 
+        self.view.cam1dialog.DRAW_STITCHES.
+
+        Parameters
+        ----------
+        state : int
+            State of checkbox:
+                0 - off
+                1 - partially on
+                2 - on
+
+        Returns
+        -------
+        None.
+
+        """
         if state==0:
-            self.view.DRAW_STITCHES = False
+            self.view.cam1dialog.DRAW_STITCHES = False
         else:
-            self.view.DRAW_STITCHES = True
+            self.view.cam1dialog.DRAW_STITCHES = True
 
     def on_click_continuarButton(self):
         """
