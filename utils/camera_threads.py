@@ -71,10 +71,8 @@ class CameraWorker(QThread):
         None.
 
         """
-        print('Calling stop() for Camera...')
         self.ThreadActive = False
         self.wait()
-        print('Camera stopped...')
 
 
 class RealSenseCameraWorker(QThread):
@@ -151,10 +149,8 @@ class RealSenseCameraWorker(QThread):
         None.
 
         """
-        print('Calling stop() for RealSense...')
         self.running = False
         self.wait()
-        print('RealSense stopped...')
         
 
 
