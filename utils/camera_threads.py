@@ -21,20 +21,10 @@ class CameraWorker(QThread):
     """
     ImageUpdate = pyqtSignal(QImage)
     
-    def __init__(self, verbose=False):
+    def __init__(self):
         """CameraWorker constructor
         
-        Sets the deviceIndex. If verbose is True, the thread will print 
-        something when the thread is ran, stopped, receiving good frames and
-        when the camera is not accesible.
-
-        Parameters
-        ----------
-        deviceIndex : int, optional
-            Device index. Depends on OS and number of cameras connected. The
-            default is 0.
-        verbose : bool, optional
-            If true, show some debugging info. The default is False.
+        Sets the deviceIndex to -1.
 
         Returns
         -------
@@ -43,7 +33,6 @@ class CameraWorker(QThread):
         """
         super().__init__()
         self.deviceIndex = -1
-        self.verbose = verbose
     
     def run(self):
         """
@@ -54,7 +43,6 @@ class CameraWorker(QThread):
         None.
 
         """
-        if self.verbose: print('\nrun feed')
         self.ThreadActive = True
         
         for i in range(-1,5): # try 6 camera indices (including -1)
@@ -71,7 +59,6 @@ class CameraWorker(QThread):
                     ConvertToQtFormat = QImage(Image.data, Image.shape[1], Image.shape[0], QImage.Format_RGB888)
                     Pic = ConvertToQtFormat.scaled(640, 480, Qt.KeepAspectRatio)
                     self.ImageUpdate.emit(Pic)
-                    if self.verbose: print('send good frames')
         else:
             print(f'Unable to open video camera {self.deviceIndex}')
         
@@ -84,9 +71,11 @@ class CameraWorker(QThread):
         None.
 
         """
-        if self.verbose: print('stop feed')
+        print('Calling stop() for Camera...')
         self.ThreadActive = False
         self.wait()
+        print('Camera stopped...')
+
 
 class RealSenseCameraWorker(QThread):
     """Handles the RealSense camera thread.
@@ -96,19 +85,10 @@ class RealSenseCameraWorker(QThread):
     """
     frame_signal = pyqtSignal(QImage, QImage)
 
-    def __init__(self, verbose=False):
+    def __init__(self):
         """RealSenseCameraWorker constructor
         
         Sets the pipeline and the config. Enables the depth stream.
-        
-        If verbose is True, the thread will print something when the thread is
-        ran, stopped and when the camera is not accesible or an exception
-        occurs.
-
-        Parameters
-        ----------
-        verbose : bool, optional
-            If true, show some debugging info. The default is False.
 
         Returns
         -------
@@ -116,7 +96,6 @@ class RealSenseCameraWorker(QThread):
 
         """
         super().__init__()
-        self.verbose = verbose
         self.pipeline = rs.pipeline()
         self.config = rs.config()
         self.align = rs.align(rs.stream.color)
@@ -132,7 +111,6 @@ class RealSenseCameraWorker(QThread):
         None.
 
         """
-        if self.verbose: print("RealSenseCameraWorker started")
         pipeline_wrapper = rs.pipeline_wrapper(self.pipeline)
         if self.config.can_resolve(pipeline_wrapper):
             self.pipeline.start(self.config)
@@ -157,7 +135,7 @@ class RealSenseCameraWorker(QThread):
                 
                     self.frame_signal.emit(color_qimage, depth_qimage)
             except Exception as e:
-                if self.verbose: print("Exception in RealSenseCameraWorker:", e)
+                print(e)
                 self.running = False
             finally:
                 self.pipeline.stop()
@@ -173,9 +151,10 @@ class RealSenseCameraWorker(QThread):
         None.
 
         """
-        if self.verbose: print("Stopping RealSenseCameraWorker")
+        print('Calling stop() for RealSense...')
         self.running = False
         self.wait()
+        print('RealSense stopped...')
         
 
 
