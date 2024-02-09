@@ -43,6 +43,7 @@ class CamView(QDialog):
         grey = QPixmap(640, 480)
         grey.fill(QColor('darkGray'))
         self.camLabel.setPixmap(grey)
+        self.setWindowFlags(self.windowFlags() | Qt.CustomizeWindowHint)
         self.setWindowFlag(Qt.WindowCloseButtonHint, False)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         
@@ -143,9 +144,10 @@ class RealSenseCamView(QDialog):
         self.setPaths()
         uic.loadUi(self.uiPath, self)
         
-        grey = QPixmap(640, 480)
+        grey = QPixmap(848, 480)
         grey.fill(QColor('darkGray'))
         self.camLabel.setPixmap(grey)
+        self.setWindowFlags(self.windowFlags() | Qt.CustomizeWindowHint)
         self.setWindowFlag(Qt.WindowCloseButtonHint, False)
         self.setWindowFlag(Qt.WindowContextHelpButtonHint, False)
         
