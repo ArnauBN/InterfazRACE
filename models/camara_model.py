@@ -91,7 +91,11 @@ def getStitches():
         num = resp['num']
         # stitches = resp['stitches'] # unsused in the interface
         raw = resp['raw']
-        raw_matrix = np.array(raw).reshape(len(raw)//3, 3)
+        # print(raw)
+        # print('-----')
+        # print(resp['stitches'])
+        raw_matrix = np.array(raw).reshape(len(raw)//2, 2)
+        # print(raw_matrix)
         return num, raw_matrix
     else:
         return None, None

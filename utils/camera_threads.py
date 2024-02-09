@@ -97,8 +97,8 @@ class RealSenseCameraWorker(QThread):
         self.pipeline = rs.pipeline()
         self.config = rs.config()
         self.align = rs.align(rs.stream.color)
-        self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-        self.config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
+        self.config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 30)
+        self.config.enable_stream(rs.stream.color, 848, 480, rs.format.bgr8, 30)
 
     def run(self):
         """
@@ -111,13 +111,18 @@ class RealSenseCameraWorker(QThread):
         """
         pipeline_wrapper = rs.pipeline_wrapper(self.pipeline)
         if self.config.can_resolve(pipeline_wrapper):
-            self.pipeline.start(self.config)
+            profile = self.pipeline.start(self.config)
+            print(profile.get_device().query_sensors()[0].get_stream_profiles()[0])
+            # print(self.pipeline.get_active_profile().get_device().query_sensors()[0].get_supported_options())
             self.running = True
             try:
                 while self.running:
                     frames = self.pipeline.wait_for_frames()
                     depth_frame = frames.get_depth_frame()
                     color_frame = frames.get_color_frame()
+                    # w = depth_frame.get_width()
+                    # h = depth_frame.get_height()
+                    # print(f"(W, H) = ({w}, {h})")
                 
                     depth_image = None
                     if depth_frame:
@@ -129,7 +134,7 @@ class RealSenseCameraWorker(QThread):
                     if color_frame:
                         color_npframe = np.asanyarray(color_frame.get_data())
                         color_image = color_npframe
-                        color_qimage = QImage(color_image.data, color_image.shape[1], color_image.shape[0], QImage.Format_BGR888)
+                        color_qimage = QImage(color_image.data, color_image.shape[1], color_image.shape[0], QImage.Format_RGB888)
                 
                     self.frame_signal.emit(color_qimage, depth_qimage)
             except Exception as e:
