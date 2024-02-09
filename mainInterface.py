@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Wed Jan 10 12:34:35 2023
-Python version: Python 3.11
+Python version: Python 3.8
 
 @author: Arnau Busqué Nadal <arnau.busque@goumh.umh.es>
 
