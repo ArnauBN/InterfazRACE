@@ -5,7 +5,9 @@ Created on Tue Jan 16 13:12:03 2024
 @author: arnau
 """
 import sys
-sys.path.append('/home/nbio/catkin_ws/src/camera_pkg/scripts')
+
+from utils.globals import PATH_TO_INTERFAZ_CLIENT_CAMERA
+sys.path.append(PATH_TO_INTERFAZ_CLIENT_CAMERA)
 
 startROS=True
 try:
