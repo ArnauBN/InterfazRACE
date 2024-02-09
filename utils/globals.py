@@ -11,5 +11,6 @@ import pathlib
 PATH_TO_PROJECT = pathlib.Path().resolve() # current working directory
 # PATH_TO_PROJECT = './catkin_ws/src/interfazV0/src'
 
-# Implemented Data-Flow-Diagram items
-ACCEPTED_DFD_ITEM_TYPES = ['process']
+PATH_TO_INTERFAZ_CLIENT_CAMERA = '/home/nbio/catkin_ws/src/camera_pkg/scripts'
+
+ACCEPTED_DFD_ITEM_TYPES = ['process'] # Implemented Data-Flow-Diagram items
