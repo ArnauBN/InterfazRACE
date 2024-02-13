@@ -7,12 +7,36 @@ Created on Tue Jan 16 11:06:33 2024
 
 from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtGui import QImage
-import cv2
 import numpy as np
 import pyrealsense2 as rs
+import cv2
+
+import os
 
 
 #%%
+def getLinuxVideoPorts():
+    devs = os.listdir('/dev')
+    vid_indices = [int(dev[-1]) for dev in devs if dev.startswith('video')]
+    return sorted(vid_indices)
+
+def getConnectedCameras(Linux=True):
+    n = getLinuxVideoPorts() if Linux else 10
+    cams = []
+    for i in n:
+        cap = cv2.VideoCapture(i, cv2.CAP_ANY)
+        if cap is not None and cap.isOpened():
+            cams.append(i)
+            cap.release()
+    return cams
+
+def getExternalCams(cams):
+    external_cams = []
+    for c in cams:
+        if c not in [-1, 0]:
+            external_cams.append(c)
+    return external_cams
+
 class CameraWorker(QThread):
     """Handles the camera thread.
     
@@ -44,12 +68,19 @@ class CameraWorker(QThread):
 
         """
         self.ThreadActive = True
-        
-        for i in range(-1,5): # try 6 camera indices (including -1)
-            self.deviceIndex = i
-            Capture = cv2.VideoCapture(self.deviceIndex)
-            if Capture is not None and Capture.isOpened():
-                break
+        cams = getConnectedCameras(Linux=True)
+        ext_cams = getExternalCams(cams)
+        # print(cams)
+        # print(ext_cams)
+        self.deviceIndex = ext_cams[0]
+        Capture = cv2.VideoCapture(self.deviceIndex)
+
+        # for i in range(5): # try 6 camera indices (including -1)
+        #     self.deviceIndex = i
+        #     Capture = cv2.VideoCapture(self.deviceIndex)
+        #     if Capture is not None and Capture.isOpened():
+        #         print(i)
+        #         break
         
         if Capture is not None and Capture.isOpened():
             while self.ThreadActive:
@@ -134,7 +165,9 @@ class RealSenseCameraWorker(QThread):
                     if color_frame:
                         color_npframe = np.asanyarray(color_frame.get_data())
                         color_image = color_npframe
-                        color_qimage = QImage(color_image.data, color_image.shape[1], color_image.shape[0], QImage.Format_RGB888)
+                        color_image_rgb = cv2.cvtColor(color_image, cv2.COLOR_BGR2RGB)
+                        color_qimage = QImage(color_image_rgb.data, color_image_rgb.shape[1], color_image_rgb.shape[0], QImage.Format_RGB888)
+                        # color_qimage = QImage(color_image.data, color_image.shape[1], color_image.shape[0], QImage.Format_RGB888)
                 
                     self.frame_signal.emit(color_qimage, depth_qimage)
             except Exception as e:
