@@ -127,7 +127,7 @@ class RazonadorDevice:
         None.
 
         """
-        self.pub1 = rospy.Publisher('cmd_key', UInt8MultiArray, queue_size=10)
+        self.pub = rospy.Publisher('cmd_key', UInt8MultiArray, queue_size=10)
         rospy.Subscriber("stateMachine", String, self.callback)
 
     def _savePublish(self, data: list):
@@ -195,7 +195,7 @@ class RazonadorDevice:
         if fase == '0':
             return [1, 1, 1, 1, 1] # RESET
         
-        if self.experimentIndex==0:
+        if self.experimentIndex==1:
             if str(fase)=='1':
                 return [0, 0, 1, 0, 1]
             elif str(fase)=='2':
@@ -216,17 +216,25 @@ class RazonadorDevice:
                 return [0, 0, 1, 1, 1]
             else:
                 return
-        elif self.experimentIndex==1:
+        elif self.experimentIndex==0:
             if str(fase)=='1':
-                return [0, 0, 1, 0, 1]
+                return [0, 0, 0, 1]
             elif str(fase)=='2':
-                return [0, 1, 1, 0, 1]
+                return [1, 0, 0, 1]
             elif str(fase)=='3':
-                return [1, 1, 0, 0, 1]
+                return [1, 1, 0, 0]
             elif str(fase)=='4':
-                return [1, 1, 0, 1, 1]
+                return [2, 1, 0, 0]
             elif str(fase)=='5':
-                return [1, 1, 0, 1, 0]
+                return [2, 0, 0, 1]
+            elif str(fase)=='6':
+                return [2, 0, 1, 0]
+            elif str(fase)=='7':
+                return [3, 0, 1, 0]
+            elif str(fase)=='8':
+                return [4, 0, 0, 1]
+            elif str(fase)=='9':
+                return [5, 0, 0, 1]
             else:
                 return
     
