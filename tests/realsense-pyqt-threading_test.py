@@ -21,7 +21,7 @@ class CameraThread(QThread):
         QThread.__init__(self)
         self.pipeline = rs.pipeline()
         self.config = rs.config()
-        self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+        self.config.enable_stream(rs.stream.depth, 848, 480, rs.format.z16, 30)
 
         self.running = True
 
@@ -60,7 +60,6 @@ class MainWindow(QMainWindow):
         self.camera_thread.start()
 
     def update_frames(self, depth_frame):
-        # You can similarly update the depth label if needed
         depth_image = cv2.applyColorMap(cv2.convertScaleAbs(depth_frame, alpha=0.03), cv2.COLORMAP_JET)
         depth_qimage = QImage(depth_image.data, depth_image.shape[1], depth_image.shape[0], QImage.Format_RGB888)
         self.depth_label.setPixmap(QPixmap.fromImage(depth_qimage))
