@@ -1,6 +1,10 @@
-# Experimento razonador 5 fases
+# Experimento asistente
 process	P1	Fase 1
 process	P2	Fase 2
 process	P3	Fase 3
 process	P4	Fase 4
 process	P5	Fase 5
+process	P6	Fase 6
+process	P7	Fase 7
+process	P8	Fase 8
+process	P9	Fase 9

@@ -8,7 +8,6 @@ dependencies:
   - pyqt=5.15.10
   - pyserial=3.5
   - spyder-kernels=2.4.4
-  - pip=23.3.1
   - pip:
     - opencv-python-headless==4.9.0.80
     - pyrealsense2==2.54.2.5684

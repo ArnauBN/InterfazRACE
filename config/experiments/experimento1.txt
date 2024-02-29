@@ -1,4 +1,4 @@
-# Experimento razonador 9 fases
+# Experimento endostitch
 process	P1	Fase 1
 process	P2	Fase 2
 process	P3	Fase 3

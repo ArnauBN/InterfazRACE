@@ -72,7 +72,7 @@ class CameraWorker(QThread):
         ext_cams = getExternalCams(cams)
         # print(cams)
         # print(ext_cams)
-        self.deviceIndex = ext_cams[0]
+        self.deviceIndex = ext_cams[0] if ext_cams else cams[0]
         Capture = cv2.VideoCapture(self.deviceIndex)
 
         # for i in range(5): # try 6 camera indices (including -1)

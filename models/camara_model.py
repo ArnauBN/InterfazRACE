@@ -87,7 +87,20 @@ class CamaraDevice:
         self.state = aimedState
 
 import numpy as np
+from utils.globals import PATH_TO_PROJECT
+import pathlib
 def getStitches():
+    stitches_path = str(PATH_TO_PROJECT / pathlib.Path('config', 'PuntosCam.txt'))
+    points = []
+    with open(stitches_path, 'r') as f:
+        for i, line in enumerate(f):
+            line_list = line.split()
+            point = [float(p) for p in line_list]
+            points.append(point)
+    return i+1, np.array(points)
+    
+    
+    
     if startROS:
         resp = interface_client()
         num = resp['num']
