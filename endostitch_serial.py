@@ -10,7 +10,7 @@ import rospy
 from std_msgs.msg import String
 import serial
 
-    
+
 #%%
 class EndostitchDevice:
     """Endostitch serial class. Handles the serial communication.
