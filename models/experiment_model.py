@@ -40,7 +40,7 @@ class Experiment:
     #TODO
     def start(self):
         """
-        Could be implemented to a start an automatic experiment.
+        Could be implemented to start an automatic experiment.
 
         Returns
         -------
@@ -52,7 +52,7 @@ class Experiment:
     #TODO
     def stop(self):
         """
-        Could be implemented to a stop an automatic experiment. 
+        Could be implemented to stop an automatic experiment. 
         
         For now, it sets the state to -1.
 
